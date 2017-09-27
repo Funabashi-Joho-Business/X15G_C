@@ -11,6 +11,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback{
 
+    //TestChet! x15g009
+
     private GoogleMap mMap;
 
     @Override
