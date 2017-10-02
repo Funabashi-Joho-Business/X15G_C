@@ -1,0 +1,126 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@drawable/frame_style_menuborder"
+    android:orientation="vertical"
+    tools:context="jp.ac.chiba_fjb.c.Chet.MenuFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp">
+
+        <ImageButton
+            android:id="@+id/menu"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/white"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/menu" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton8"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:background="@android:color/white"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/invitation2" />
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="30dp">
+
+            <ImageButton
+                android:id="@+id/imageButton9"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@android:color/white"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/participation2" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingRight="30dp">
+
+            <ImageButton
+                android:id="@+id/imageButton10"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@android:color/white"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/secession2" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right|center"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+            <ImageButton
+                android:id="@+id/imageButton7"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@android:color/white"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/log2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left|center"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <ImageButton
+                android:id="@+id/imageButton11"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@android:color/white"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/config2" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
