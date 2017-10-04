@@ -36,7 +36,7 @@
                 android:layout_gravity="center"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/invitation2" />
+                app:srcCompat="@drawable/invitation" />
 
         </LinearLayout>
     </RelativeLayout>
@@ -60,7 +60,7 @@
                 android:layout_height="100dp"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/participation2" />
+                app:srcCompat="@drawable/participation" />
 
         </LinearLayout>
 
@@ -78,7 +78,7 @@
                 android:layout_height="100dp"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/secession2" />
+                app:srcCompat="@drawable/secession" />
         </LinearLayout>
     </LinearLayout>
 
@@ -97,12 +97,12 @@
             android:paddingRight="10dp">
 
             <ImageButton
-                android:id="@+id/imageButton7"
+                android:id="@+id/log"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/log2" />
+                app:srcCompat="@drawable/log" />
         </LinearLayout>
 
         <LinearLayout
@@ -119,7 +119,7 @@
                 android:layout_height="100dp"
                 android:background="@android:color/white"
                 android:scaleType="centerInside"
-                app:srcCompat="@drawable/config2" />
+                app:srcCompat="@drawable/config" />
         </LinearLayout>
     </LinearLayout>
 

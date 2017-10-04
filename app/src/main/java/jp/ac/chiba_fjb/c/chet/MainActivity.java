@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     ImageButton ib;
+    static FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft = getSupportFragmentManager().beginTransaction();
                 ft.add(R.id.menubox,new MenuFragment());
                 ft.commit();
             }
