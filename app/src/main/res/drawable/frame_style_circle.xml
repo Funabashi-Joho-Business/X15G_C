@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape android:shape="ring"
+    android:innerRadius="38dp"
+    android:thickness="10dp"
+    android:useLevel="false"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 直径=(innerRadius 38dp + thickness 10dp + stroke:width 2dp)×2 -->
+    <size
+        android:width="100dp"
+        android:height="100dp"/>
+    <!-- strokeタグで線の太さ(width)と色(color)を指定 -->
+    <stroke android:width="4dp" android:color="#000000" />
+</shape>
