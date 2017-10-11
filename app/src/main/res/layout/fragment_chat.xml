@@ -22,10 +22,10 @@
 
             <ImageButton
                 android:id="@+id/imageButton2"
-                app:srcCompat="?attr/homeAsUpIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@android:color/white" />
+                android:background="#00000000"
+                app:srcCompat="?attr/homeAsUpIndicator" />
 
             <TextView
                 android:id="@+id/textView5"

@@ -1,16 +1,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@drawable/signup"
     android:orientation="vertical"
     tools:context=".InvitationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainbox"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentEnd="false"
         android:layout_marginTop="200dp"
         android:orientation="vertical">
 
@@ -100,18 +113,29 @@
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:background="@drawable/frame_style_roundness"
-            android:text="Button" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="false"
+        android:layout_alignRight="@+id/mainbox"
+        android:layout_below="@+id/mainbox"
+        android:layout_gravity="right"
+        android:background="@drawable/frame_style_roundness_white"
+        android:text="招待を送る" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentRight="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:text="新しいアカウントを探す"
+        android:textColor="@android:color/white" />
 </RelativeLayout>
