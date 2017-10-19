@@ -23,6 +23,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private GoogleMap mMap;
+    SupportMapFragment mapFragment;
     ImageButton ib;
 
     @Override
@@ -30,7 +31,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
         mapFragment.getMapAsync(this);
 
         ib = (ImageButton) view.findViewById(R.id.ImageButton);
@@ -47,8 +48,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        //自分の位置をマップ上に表示
+        MyLocationSource ls = new MyLocationSource(getActivity());
+        googleMap.setMyLocationEnabled(true); //警告は無視
+        googleMap.setLocationSource(ls);
+
         mMap = googleMap;
-        LatLng sydney = new LatLng(35.7016369, 139.9836126);                //位置設定
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,15.0f));   //範囲2.0～21.0(全体～詳細)
+        LatLng sydney = new LatLng(ls.my,ls.mx);                //位置設定
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.0f));   //範囲2.0～21.0(全体～詳細)
     }
 }
