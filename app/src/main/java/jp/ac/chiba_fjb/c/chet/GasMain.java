@@ -30,25 +30,25 @@ function Main(name) {
 public class GasMain extends AppCompatActivity {
 
     private GoogleScript mGoogleScript;
-    private GoogleDrive mDrive;
+//    private GoogleDrive mDrive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //キー登録用SHA1の出力(いらなければ消す)
-        Log.d("フィンガーコード",AppFinger.getSha1(this));
+//        Log.d("フィンガーコード",AppFinger.getSha1(this));
 
-        mDrive = new GoogleDrive(this);
-        mDrive.setOnConnectedListener(new GoogleDrive.OnConnectListener() {
-            @Override
-            public void onConnected(boolean flag) {
-                if(flag)
-                    mDrive.createFolder(mDrive.getRootId(),"ふぉっふぉっふぉ");
-            }
-        });
-        mDrive.connect();
+//
 
-
+//        mDrive = new GoogleDrive(this);
+//        mDrive.setOnConnectedListener(new GoogleDrive.OnConnectListener() {
+//            @Override
+//            public void onConnected(boolean flag) {
+//                if(flag)
+//                    mDrive.createFolder(mDrive.getRootId(),"ふぉっふぉっふぉ");
+//            }
+//        });
+//        mDrive.connect();
         //Scriptで必要な権限を記述する
         final String[] SCOPES = {
                 "https://www.googleapis.com/auth/drive",
