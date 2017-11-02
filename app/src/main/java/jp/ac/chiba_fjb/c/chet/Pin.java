@@ -6,25 +6,33 @@ import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.model.LatLng;
 
-public class MyLocationSource implements LocationSource, android.location.LocationListener {
-    private final static int GPS_TIME = 5 * 10000;    //5秒
-    private final static int NET_TIME = 10 * 10000;    //10秒
+public class Pin implements LocationSource, android.location.LocationListener {
+    private final static int GPS_TIME = 3 * 1000;    //5秒
+    private final static int NET_TIME = 1000;    //10秒
     private Context mContext;
     private LocationManager mLocationManager;
     private OnLocationChangedListener mListener;
     private Location mLastLocation;
     public double my;
     public double mx;
+    public LatLng sydney;
 
 
-    MyLocationSource(Context context) {
+    Pin(Context context, GoogleMap map) {
         mContext = context;
         mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         my = (mLocationManager.getLastKnownLocation("gps").getLatitude());
         mx = (mLocationManager.getLastKnownLocation("gps").getLongitude());
         System.out.println("\n緯度："+my+"\n経度："+mx);
+        map.setMyLocationEnabled(true); //警告は無視
+        map.setLocationSource(this);
+        sydney = new LatLng(my,mx);                //位置設定
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.0f));   //範囲2.0～21.0(全体～詳細)
     }
 
     @Override
@@ -56,6 +64,11 @@ public class MyLocationSource implements LocationSource, android.location.Locati
         {
             mListener.onLocationChanged(location);
             mLastLocation = location;
+            my = mLastLocation.getLatitude();
+            mx = mLastLocation.getLongitude();
+            if(new MainFragment().r != null) {
+                new MainFragment().RouteSearch();
+            }
         }
     }
 

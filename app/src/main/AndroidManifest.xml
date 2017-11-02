@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +24,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCr_kQLJx6vFTi_v2_0DvCvYkhcA6xVsgA" />
+            android:value="AIzaSyD0JaX59tLcycdDM6b2a6dtxR5zNhGlRMk" />
     </application>
 
 </manifest>
