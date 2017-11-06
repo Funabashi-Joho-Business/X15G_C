@@ -71,15 +71,15 @@ public class GasMain extends AppCompatActivity {
 
         //送信パラメータ
         List<Object> params = new ArrayList<>();
-        params.add(userid);
-        params.add(username);
-        params.add(positionN);
-        params.add(positionE);
-        params.add(pinN);
-        params.add(pinE);
-        params.add(imageurl);
-        params.add(parentid);
-        params.add(chettext);
+        params.add(userid.getText().toString());
+        params.add(username.getText().toString());
+        params.add(positionN.getText().toString());
+        params.add(positionE.getText().toString());
+        params.add(pinN.getText().toString());
+        params.add(pinE.getText().toString());
+        params.add(imageurl.getText().toString());
+        params.add(parentid.getText().toString());
+        params.add(chettext.getText().toString());
 
         //ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
         mGoogleScript.execute("MvZl6XtJBDS4_n0KUExF0Whni4E4BWcjp", "AIzaSyD3Lw17kGAJrUD5_ZZIeD-VFq8rzvBMKZ0","Main",
