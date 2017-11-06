@@ -1,9 +1,7 @@
 package jp.ac.chiba_fjb.c.chet;
 
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -22,7 +19,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener, RouteReader.RouteListener {
@@ -32,13 +28,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         // Required empty public constructor
     }
 
-    private GoogleMap mMap;
-    SupportMapFragment mapFragment;
-    ImageButton ib;
-    Pin p;
-    TextView minute;
-    RouteData.Routes r;
-    List<LatLng> list;
+    private static GoogleMap mMap;
+    private SupportMapFragment mapFragment;
+    private ImageButton ib;
+    private Pin p;
+    private static TextView minute;
+    private static RouteData.Routes r;
+    private static String destination;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,8 +70,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     public void onMapClick(LatLng latLng) {
         LatLng lat = new LatLng(latLng.latitude, latLng.longitude);
         String origin = p.my+","+p.mx;
-        String destination = lat.latitude+","+lat.longitude;
-        RouteReader.recvRoute(origin, destination, this);
+        destination = lat.latitude+","+lat.longitude;
+        Route(origin);
+    }
+    public void Route(String origin){
+        if(destination != null) {
+            RouteReader.recvRoute(origin, destination, this);
+        }
     }
 
     @Override
@@ -83,7 +84,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         //ルート受け取り処理
         if (routeData != null && routeData.routes.length > 0 && routeData.routes[0].legs.length > 0) {
             r = routeData.routes[0];
-            RouteData.Location start = r.legs[0].start_location;
+//            RouteData.Location start = r.legs[0].start_location;
             RouteData.Location end = r.legs[0].end_location;
             mMap.clear();
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lng)).title(r.legs[0].start_address));
@@ -93,18 +94,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         }
     }
     public void RouteSearch(){
-//        LatLng s;
-//        LatLng g;
-//        RouteData.Location start;
-//        RouteData.Location end;
-//        for (int i = 0; i < r.legs[0].steps.length; i++) {
-//            start = r.legs[0].steps[i].start_location;
-//            s = new LatLng(start.lat, start.lng);
-//            end = r.legs[0].steps[i].end_location;
-//            g = new LatLng(end.lat,end.lng);
-//            PolylineOptions straight = new PolylineOptions().add(s, g).color(Color.BLUE).width(15);
-//            mMap.addPolyline(straight);
-//        }
         List<LatLng> route = new ArrayList<LatLng>();
         for (RouteData.Steps i : r.legs[0].steps) {
             route.add(new LatLng(i.start_location.lat,i.start_location.lng));
@@ -114,6 +103,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         for (LatLng latLng : route) {
             options.add(latLng);
         }
+        options.geodesic(true);
         options.color(Color.BLUE);
         options.width(15);
         mMap.addPolyline(options);

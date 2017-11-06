@@ -18,6 +18,7 @@ public class Pin implements LocationSource, android.location.LocationListener {
     private LocationManager mLocationManager;
     private OnLocationChangedListener mListener;
     private Location mLastLocation;
+    private MainFragment mf;
     public double my;
     public double mx;
     public LatLng sydney;
@@ -33,6 +34,7 @@ public class Pin implements LocationSource, android.location.LocationListener {
         map.setLocationSource(this);
         sydney = new LatLng(my,mx);                //位置設定
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.0f));   //範囲2.0～21.0(全体～詳細)
+        mf = new MainFragment();
     }
 
     @Override
@@ -66,9 +68,8 @@ public class Pin implements LocationSource, android.location.LocationListener {
             mLastLocation = location;
             my = mLastLocation.getLatitude();
             mx = mLastLocation.getLongitude();
-            if(new MainFragment().r != null) {
-                new MainFragment().RouteSearch();
-            }
+            String origin = my +","+ mx;
+            mf.Route(origin);
         }
     }
 
