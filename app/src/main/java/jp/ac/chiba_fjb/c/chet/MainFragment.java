@@ -1,6 +1,7 @@
 package jp.ac.chiba_fjb.c.chet;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,7 +23,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener, RouteReader.RouteListener {
+public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
 
 
     public MainFragment() {
@@ -31,6 +33,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private static GoogleMap mMap;
     private SupportMapFragment mapFragment;
     private ImageButton ib;
+    private Button b;
     private Pin p;
     private static TextView minute;
     private static RouteData.Routes r;
@@ -45,8 +48,17 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         mapFragment.getMapAsync(this);
 
         minute = view.findViewById(R.id.minute);
-
+        b = view.findViewById(R.id.Transmission);
         ib = (ImageButton) view.findViewById(R.id.ImageButton);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), GasMain.class);
+                startActivity(intent);
+            }
+        });
+
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
