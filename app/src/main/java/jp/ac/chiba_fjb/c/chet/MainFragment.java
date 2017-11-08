@@ -1,7 +1,6 @@
 package jp.ac.chiba_fjb.c.chet;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,8 +53,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), GasMain.class);
-                startActivity(intent);
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.maindisplay,new GasFragment());
+                ft.addToBackStack(null);
+                ft.commit();
+
+//                Intent intent = new Intent(getActivity(), GasMain.class);
+//                startActivity(intent);
             }
         });
 

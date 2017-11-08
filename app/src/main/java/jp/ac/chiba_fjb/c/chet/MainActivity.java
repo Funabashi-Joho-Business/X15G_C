@@ -9,11 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import jp.ac.chiba_fjb.c.chet.SubModule.AppFinger;
+import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 import jp.ac.chiba_fjb.c.chet.SubModule.Permission;
 
 
 public class MainActivity extends AppCompatActivity{
+    private GoogleScript mGoogleScript;
     Permission mPermission;
+    public GoogleScript getGas(){return mGoogleScript;}
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +40,25 @@ public class MainActivity extends AppCompatActivity{
             }
         });
         mPermission.requestPermissions(this);
+
         Log.d("フィンガーコード", AppFinger.getSha1(this));
+        //GoogleAppsScript初期化処理
+        //Scriptで必要な権限を記述する
+        final String[] SCOPES = {
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/script.storage",
+            "https://www.googleapis.com/auth/spreadsheets"};
+        mGoogleScript = new GoogleScript(this,SCOPES);
+        //強制的にアカウントを切り替える場合
+        //mGoogleScript.resetAccount();
 
 
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        //必要に応じてアカウントや権限ダイアログの表示
+        mGoogleScript.onActivityResult(requestCode,resultCode,data);
     }
 
     @Override
@@ -51,5 +66,14 @@ public class MainActivity extends AppCompatActivity{
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mPermission.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
+    }
+    public void onBackPressed() {
+        //フラグメントをさかのぼる処理
+        int backStackCnt = getSupportFragmentManager().getBackStackEntryCount();
+        if (backStackCnt != 0) {
+            getSupportFragmentManager().popBackStack();
+        }
+        else
+            super.onBackPressed();
     }
 }

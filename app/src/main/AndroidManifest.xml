@@ -21,9 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="jp.ac.chiba_fjb.c.chet.GasMain"
-            android:screenOrientation="portrait">
-        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
