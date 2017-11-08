@@ -87,7 +87,7 @@ public class GasMain extends AppCompatActivity {
         params.add(chettext);
 
         //ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
-        mGoogleScript.execute("MFFgxqGbnEFi-cSW-rAPrfgg__u_fxeMC", null ,"main",
+        mGoogleScript.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"main",
                 params, new GoogleScript.ScriptListener() {
                     @Override
                     public void onExecuted(GoogleScript script, Operation op) {
