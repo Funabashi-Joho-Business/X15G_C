@@ -27,13 +27,16 @@ public class Pin implements LocationSource, android.location.LocationListener {
     Pin(Context context, GoogleMap map) {
         mContext = context;
         mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        my = (mLocationManager.getLastKnownLocation("gps").getLatitude());
-        mx = (mLocationManager.getLastKnownLocation("gps").getLongitude());
-        System.out.println("\n緯度："+my+"\n経度："+mx);
-        map.setMyLocationEnabled(true); //警告は無視
-        map.setLocationSource(this);
-        sydney = new LatLng(my,mx);                //位置設定
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.0f));   //範囲2.0～21.0(全体～詳細)
+        Location gps = mLocationManager.getLastKnownLocation("gps");
+        if(gps != null){
+            my = gps.getLatitude();
+            mx = gps.getLongitude();
+            System.out.println("\n緯度："+my+"\n経度："+mx);
+            map.setMyLocationEnabled(true); //警告は無視
+            map.setLocationSource(this);
+            sydney = new LatLng(my,mx);                //位置設定
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney,17.0f));   //範囲2.0～21.0(全体～詳細)
+        }
         mf = new MainFragment();
     }
 
