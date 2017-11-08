@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet;
+package jp.ac.chiba_fjb.c.chet1;
 
 
 import android.os.Bundle;
@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class ChatFragment extends Fragment {
+public class InvitationFragment extends Fragment {
 
 
-    public ChatFragment() {
+    public InvitationFragment() {
         // Required empty public constructor
     }
 
@@ -19,7 +19,7 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_invitation, container, false);
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

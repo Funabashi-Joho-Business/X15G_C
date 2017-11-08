@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet;
+package jp.ac.chiba_fjb.c.chet1;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.widget.EditText;
 import com.google.api.services.script.model.Operation;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.List;
 //import jp.ac.chiba_fjb.example.googlescript.R;
 
@@ -31,26 +30,26 @@ function Main(name) {
 public class GasMain extends AppCompatActivity {
 
     private GoogleScript mGoogleScript;
-//    private GoogleDrive mDrive;
+   private GoogleDrive mDrive;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //キー登録用SHA1の出力(いらなければ消す)
-//        Log.d("フィンガーコード",AppFinger.getSha1(this));
+        Log.d("フィンガーコード",AppFinger.getSha1(this));
 
 //
 
-//        mDrive = new GoogleDrive(this);
-//        mDrive.setOnConnectedListener(new GoogleDrive.OnConnectListener() {
-//            @Override
-//            public void onConnected(boolean flag) {
-//                if(flag)
-//                    mDrive.createFolder(mDrive.getRootId(),"ふぉっふぉっふぉ");
-//            }
-//        });
-//        mDrive.connect();
+        mDrive = new GoogleDrive(this);
+        mDrive.setOnConnectedListener(new GoogleDrive.OnConnectListener() {
+            @Override
+            public void onConnected(boolean flag) {
+                if(flag)
+                    mDrive.createFolder(mDrive.getRootId(),"ふぉっふぉっふぉ");
+            }
+        });
+        mDrive.connect();
 
         //Scriptで必要な権限を記述する
         final String[] SCOPES = {
@@ -60,7 +59,7 @@ public class GasMain extends AppCompatActivity {
 
         mGoogleScript = new GoogleScript(this,SCOPES);
         //強制的にアカウントを切り替える場合
-        //mGoogleScript.resetAccount();
+        mGoogleScript.resetAccount();
 
 //        EditText userid = (EditText) findViewById(R.id.userid);
 //        EditText username = (EditText) findViewById(R.id.username);
@@ -94,16 +93,19 @@ public class GasMain extends AppCompatActivity {
         params.add(chettext);
 
         //ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
-        mGoogleScript.execute("MvZl6XtJBDS4_n0KUExF0Whni4E4BWcjp", "AIzaSyCCZvG6pl8IVinISf5TLctGW5XHVRf8EyQ","Main",
+        mGoogleScript.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"main",
                 params, new GoogleScript.ScriptListener() {
                     @Override
                     public void onExecuted(GoogleScript script, Operation op) {
-//                        if(op == null || op.getError() != null)
+                        if(op == null || op.getError() != null) {
 //                            userid.append("Script結果:エラー\n");
-//                        else {
-//                            //戻ってくる型は、スクリプト側の記述によって変わる
-//                            String s = (String) op.getResponse().get("result");
-//                            userid.append("Script結果:"+ s+"\n");
+                            System.out.println("Script結果:エラー\n");
+                        }else {
+                            //戻ってくる型は、スクリプト側の記述によって変わる
+                            String s = (String) op.getResponse().get("result");
+//                            userid.append("Script結果:" + s + "\n");
+                            System.out.println("Script結果:成功\n");
+                        }
                     }
                 });
     }
@@ -112,7 +114,7 @@ public class GasMain extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //必要に応じてアカウントや権限ダイアログの表示
-        //mDrive.onActivityResult(requestCode,resultCode,data);
+        mDrive.onActivityResult(requestCode,resultCode,data);
         mGoogleScript.onActivityResult(requestCode,resultCode,data);
     }
 }

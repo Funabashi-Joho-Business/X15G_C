@@ -1,11 +1,10 @@
-package jp.ac.chiba_fjb.c.chet;
+package jp.ac.chiba_fjb.c.chet1;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
 
 public class Top extends AppCompatActivity {
     @Override

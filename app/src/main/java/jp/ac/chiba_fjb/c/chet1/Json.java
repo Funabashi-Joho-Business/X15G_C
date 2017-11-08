@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet;
+package jp.ac.chiba_fjb.c.chet1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
