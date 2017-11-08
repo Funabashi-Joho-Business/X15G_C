@@ -30,7 +30,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/imageButton8"
+                android:id="@+id/invitaion"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
@@ -73,7 +73,7 @@
             android:paddingRight="30dp">
 
             <ImageButton
-                android:id="@+id/imageButton10"
+                android:id="@+id/secession"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@android:color/white"
@@ -114,7 +114,7 @@
             android:paddingLeft="10dp">
 
             <ImageButton
-                android:id="@+id/imageButton11"
+                android:id="@+id/setting"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@android:color/white"

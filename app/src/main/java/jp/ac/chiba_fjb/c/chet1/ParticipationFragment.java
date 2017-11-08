@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet;
+package jp.ac.chiba_fjb.c.chet1;
 
 
 import android.os.Bundle;
@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class InvitationFragment extends Fragment {
+public class ParticipationFragment extends Fragment {
 
 
-    public InvitationFragment() {
+    public ParticipationFragment() {
         // Required empty public constructor
     }
 
@@ -19,7 +19,7 @@ public class InvitationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_invitation, container, false);
+        return inflater.inflate(R.layout.fragment_participation, container, false);
     }
 
 }
