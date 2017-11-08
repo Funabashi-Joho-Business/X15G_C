@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import com.google.api.services.script.model.Operation;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import jp.ac.chiba_fjb.c.chet.SubModule.AppFinger;
+import jp.ac.chiba_fjb.c.chet.SubModule.GoogleDrive;
+import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 //import jp.ac.chiba_fjb.example.googlescript.R;
 
 /*
@@ -37,19 +41,9 @@ public class GasMain extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //キー登録用SHA1の出力(いらなければ消す)
-        Log.d("フィンガーコード",AppFinger.getSha1(this));
+        Log.d("フィンガーコード", AppFinger.getSha1(this));
 
 //
-
-        mDrive = new GoogleDrive(this);
-        mDrive.setOnConnectedListener(new GoogleDrive.OnConnectListener() {
-            @Override
-            public void onConnected(boolean flag) {
-                if(flag)
-                    mDrive.createFolder(mDrive.getRootId(),"ふぉっふぉっふぉ");
-            }
-        });
-        mDrive.connect();
 
         //Scriptで必要な権限を記述する
         final String[] SCOPES = {
@@ -93,7 +87,7 @@ public class GasMain extends AppCompatActivity {
         params.add(chettext);
 
         //ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
-        mGoogleScript.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"main",
+        mGoogleScript.execute("MFFgxqGbnEFi-cSW-rAPrfgg__u_fxeMC", null ,"main",
                 params, new GoogleScript.ScriptListener() {
                     @Override
                     public void onExecuted(GoogleScript script, Operation op) {
@@ -114,7 +108,6 @@ public class GasMain extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //必要に応じてアカウントや権限ダイアログの表示
-        mDrive.onActivityResult(requestCode,resultCode,data);
         mGoogleScript.onActivityResult(requestCode,resultCode,data);
     }
 }

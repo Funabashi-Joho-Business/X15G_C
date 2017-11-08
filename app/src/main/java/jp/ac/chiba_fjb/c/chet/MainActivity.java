@@ -1,11 +1,15 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import jp.ac.chiba_fjb.c.chet.SubModule.AppFinger;
+import jp.ac.chiba_fjb.c.chet.SubModule.Permission;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -13,19 +17,27 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.top);
 
+        //Android6.0以降のパーミッション処理
         mPermission = new Permission();
         mPermission.setOnResultListener(new Permission.ResultListener() {
             @Override
             public void onResult() {
-                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.maindisplay,new MainFragment());
-                ft.commit();
+                //ランタイムパーミッションの許可が下りた後の処理
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        setContentView(R.layout.activity_main);
+                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                        ft.replace(R.id.maindisplay,new MainFragment());
+                        ft.commit();
+                    }
+                },2000);
             }
         });
         mPermission.requestPermissions(this);
-        Log.d("フィンガーコード",AppFinger.getSha1(this));
+        Log.d("フィンガーコード", AppFinger.getSha1(this));
 
 
     }

@@ -1,9 +1,11 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet;
 
 import android.os.Handler;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import jp.ac.chiba_fjb.c.chet.SubModule.Json;
 
 
 /**

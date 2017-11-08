@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //リターンデータのサンプル

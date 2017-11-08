@@ -7,6 +7,6 @@
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:padding="0dp"
-    tools:context="jp.ac.chiba_fjb.c.chet1.MainActivity">
+    tools:context="jp.ac.chiba_fjb.c.chet.MainActivity">
 
 </FrameLayout>

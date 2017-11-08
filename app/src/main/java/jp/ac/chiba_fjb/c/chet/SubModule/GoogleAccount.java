@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet.SubModule;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -59,6 +59,7 @@ public class GoogleAccount {
         editor.putString(PREF_ACCOUNT_NAME, null);
         editor.apply();
         mAccountName = null;
+        mCredential.setSelectedAccount(null);
     }
     public void requestAccount(){
         //ユーザ選択

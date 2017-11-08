@@ -1,4 +1,4 @@
-package jp.ac.chiba_fjb.c.chet1;
+package jp.ac.chiba_fjb.c.chet.SubModule;
 
 /**
  * Created by oikawa on 2017/11/08.
