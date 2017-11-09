@@ -38,8 +38,7 @@ public class GasFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		//        EditText userid = (EditText) findViewById(R.id.userid);
+//		  EditText userid = (EditText) findViewById(R.id.userid);
 //        EditText username = (EditText) findViewById(R.id.username);
 //        EditText positionN = (EditText) findViewById(R.id.positionN);
 //        EditText positionE = (EditText) findViewById(R.id.positionE);
@@ -47,7 +46,7 @@ public class GasFragment extends Fragment {
 //        EditText pinE = (EditText) findViewById(R.id.pinE);
 //        EditText imageurl = (EditText) findViewById(R.id.imageurl);
 //        EditText parentid = (EditText) findViewById(R.id.parentid);
-		EditText chettext = (EditText) getView().findViewById(R.id.chettext);
+//		EditText chettext = (EditText) view.findViewById(R.id.chettext1);
 
 		//送信パラメータ
 		List<Object> params = new ArrayList<>();
@@ -68,12 +67,12 @@ public class GasFragment extends Fragment {
 		params.add("pinE");
 		params.add("imageurl");
 		params.add("parentid");
-		params.add(chettext);
+		params.add("chettext");
 
 		//MainActivityで作成したGASを共有して利用する
 		GoogleScript gas = ((MainActivity)getActivity()).getGas();
 		//ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
-		gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"main",
+		gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"Main",
 			params, new GoogleScript.ScriptListener() {
 				@Override
 				public void onExecuted(GoogleScript script, Operation op) {

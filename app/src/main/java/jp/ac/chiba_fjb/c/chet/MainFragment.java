@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -22,6 +24,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jp.ac.chiba_fjb.c.chet.GasMain.s;
+
 public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
 
 
@@ -33,10 +37,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private SupportMapFragment mapFragment;
     private ImageButton ib;
     private Button b;
-    private Pin p;
+    private LinearLayout chatbox;
     private static TextView minute;
     private static RouteData.Routes r;
     private static String destination;
+
+    public Pin p;
+    public static double latitude;
+    public static double longitude;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,6 +54,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
         mapFragment.getMapAsync(this);
 
+        chatbox = view.findViewById(R.id.chatbox);
         minute = view.findViewById(R.id.minute);
         b = view.findViewById(R.id.Transmission);
         ib = (ImageButton) view.findViewById(R.id.ImageButton);
@@ -53,13 +62,19 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.maindisplay,new GasFragment());
-                ft.addToBackStack(null);
-                ft.commit();
+//                FragmentTransaction ft = getFragmentManager().beginTransaction();
+//                ft.replace(R.id.maindisplay,new GasFragment());
+//                ft.addToBackStack(null);
+//                ft.commit();
 
-//                Intent intent = new Intent(getActivity(), GasMain.class);
-//                startActivity(intent);
+                EditText e = (EditText) getView().findViewById(R.id.chettext1);
+                new MainActivity().text = e.getText().toString();
+                new GasMain().main(getActivity());
+//                for(int i = 0;i<3;i++){
+//                    TextView tv = new TextView(getActivity());
+//                    tv.setText(s[i]);
+//                    chatbox.addView(tv);
+//                }
             }
         });
 
@@ -86,6 +101,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     public void onMapClick(LatLng latLng) {
         LatLng lat = new LatLng(latLng.latitude, latLng.longitude);
         String origin = p.my+","+p.mx;
+        latitude = lat.latitude;
+        longitude = lat.longitude;
         destination = lat.latitude+","+lat.longitude;
         Route(origin);
     }

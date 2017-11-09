@@ -16,6 +16,7 @@ import jp.ac.chiba_fjb.c.chet.SubModule.Permission;
 public class MainActivity extends AppCompatActivity{
     private GoogleScript mGoogleScript;
     Permission mPermission;
+    public static String text;
     public GoogleScript getGas(){return mGoogleScript;}
     @Override
     protected void onCreate(Bundle savedInstanceState) {

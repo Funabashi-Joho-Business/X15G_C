@@ -19,8 +19,8 @@ public class Pin implements LocationSource, android.location.LocationListener {
     private OnLocationChangedListener mListener;
     private Location mLastLocation;
     private MainFragment mf;
-    public double my;
-    public double mx;
+    public static double my;
+    public static double mx;
     public LatLng sydney;
 
 
