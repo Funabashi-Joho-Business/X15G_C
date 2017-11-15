@@ -31,7 +31,6 @@ public class Pin implements LocationSource, android.location.LocationListener {
         if(gps != null){
             my = gps.getLatitude();
             mx = gps.getLongitude();
-            System.out.println("\n緯度："+my+"\n経度："+mx);
             map.setMyLocationEnabled(true); //警告は無視
             map.setLocationSource(this);
             sydney = new LatLng(my,mx);                //位置設定

@@ -27,6 +27,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.invitaion).setOnClickListener(this);
         view.findViewById(R.id.setting).setOnClickListener(this);
         view.findViewById(R.id.secession).setOnClickListener(this);
+        view.findViewById(R.id.test).setOnClickListener(this);
         return view;
     }
 
@@ -55,7 +56,11 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
                 DialogFragment newFragment = new SecessionFragment();
                 newFragment.show(getFragmentManager(),null);
                 break;
-
+            case R.id.test:
+                ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.maindisplay,new SignupFragment());
+                ft.commit();
+                break;
     }
 
     }

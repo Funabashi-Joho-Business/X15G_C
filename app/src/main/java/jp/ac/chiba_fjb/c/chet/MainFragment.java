@@ -24,8 +24,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jp.ac.chiba_fjb.c.chet.GasMain.s;
-
 public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
 
 
@@ -37,7 +35,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private SupportMapFragment mapFragment;
     private ImageButton ib;
     private Button b;
-    private LinearLayout chatbox;
     private static TextView minute;
     private static RouteData.Routes r;
     private static String destination;
@@ -45,6 +42,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     public Pin p;
     public static double latitude;
     public static double longitude;
+    public static LinearLayout chatbox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,12 +67,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
 
                 EditText e = (EditText) getView().findViewById(R.id.chettext1);
                 new MainActivity().text = e.getText().toString();
-                new GasMain().main(getActivity());
-//                for(int i = 0;i<3;i++){
-//                    TextView tv = new TextView(getActivity());
-//                    tv.setText(s[i]);
-//                    chatbox.addView(tv);
-//                }
+                new GasMain().main(getActivity(),getContext(),"Main");
             }
         });
 
@@ -86,6 +79,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
                 ft.commit();
             }
         });
+        new GasMain().main(getActivity(),getContext(),"Return");
         return view;
     }
 
@@ -140,5 +134,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         options.color(Color.BLUE);
         options.width(15);
         mMap.addPolyline(options);
+    }
+    public String getCheck(){
+        String s = "";
+        try{
+            s = r.legs[0].end_address;
+        }catch (NullPointerException e){
+
+        }
+        return s;
     }
 }

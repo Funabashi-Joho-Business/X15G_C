@@ -55,7 +55,7 @@
             android:paddingLeft="30dp">
 
             <ImageButton
-                android:id="@+id/imageButton9"
+                android:id="@+id/test"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:background="@android:color/white"

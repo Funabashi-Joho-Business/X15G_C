@@ -81,7 +81,7 @@ public class GasFragment extends Fragment {
 						System.out.println("Script結果:エラー\n");
 					}else {
 						//戻ってくる型は、スクリプト側の記述によって変わる
-						String s = (String) op.getResponse().get("result");
+						String[] s = (String[]) op.getResponse().get("result");
 //                            userid.append("Script結果:" + s + "\n");
 						System.out.println("Script結果:成功\n");
 					}
