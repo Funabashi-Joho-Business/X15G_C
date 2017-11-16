@@ -61,15 +61,6 @@ public class GasMain {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                                 System.out.println("Script結果:成功\n");
-                                try{
-                                    System.out.println(s.get(0).get(9));
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                                    // Date型変換
-                                    Date d = sdf.parse(s.get(0).get(9).toString());
-                                    System.out.println(d);
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
                                 handler.post(runnable);
                             }
                         }
@@ -88,15 +79,6 @@ public class GasMain {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                                 System.out.println("Script結果:成功\n");
-                                try{
-                                    System.out.println(s.get(0).get(9));
-                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-                                    // Date型変換
-                                    Date d = sdf.parse(s.get(0).get(9).toString());
-                                    System.out.println(d);
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                }
                                 handler.post(runnable);
                             }
                         }
@@ -132,13 +114,13 @@ public class GasMain {
             @Override
             public void run() {
                 mf.chatbox.removeAllViews();
-                int cnt = 0;
+                int cnt = s.size();
                 for (int i = 0; i < 3; i++) {
-                    if(cnt >= s.size()){
+                    cnt--;
+                    if(cnt < 0){
                         break;
                     }else if(s.get(cnt).get(8).equals("")){
                         i--;
-                        cnt++;
                         continue;
                     }
                     LinearLayout ll = new LinearLayout(context);
@@ -147,7 +129,6 @@ public class GasMain {
                     setTO(tv, cnt);
                     ll.addView(tv);
                     mf.chatbox.addView(ll);
-                    cnt++;
                 }
             }
         };

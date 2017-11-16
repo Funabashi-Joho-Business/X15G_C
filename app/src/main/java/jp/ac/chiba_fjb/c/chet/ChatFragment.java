@@ -95,5 +95,4 @@ public class ChatFragment extends Fragment {
             chatbox.addView(ll);
         }
     }
-
 }

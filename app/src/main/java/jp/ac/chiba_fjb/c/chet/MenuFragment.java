@@ -33,6 +33,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
+        new MainFragment().setFlg(true);
         switch (view.getId()){
             case R.id.menu:
                 getFragmentManager().beginTransaction().remove(this).commit();
@@ -61,7 +62,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
                 ft.replace(R.id.maindisplay,new SignupFragment());
                 ft.commit();
                 break;
-    }
-
+        }
     }
 }

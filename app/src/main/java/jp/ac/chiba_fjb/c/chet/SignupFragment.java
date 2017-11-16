@@ -32,7 +32,7 @@ public class SignupFragment extends Fragment {
             public void onClick(View view) {
                 SignupMain sup = new SignupMain(username.getText().toString());
                 sup.main(getActivity());
-//                DataStorage.store(getContext(),sup);
+                DataStorage.store(getContext(),sup);
 //                System.out.println(DataStorage.load(getContext()));
             }
         });
