@@ -49,7 +49,7 @@ public class GasMain {
         //ID,ファンクション名,結果コールバック　後ろのは受け取った管理者APIキー
         if(method.equals("Main")) {
             gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null, "Main",
-                    params, new GoogleScript.ScriptListener() {
+                        params, new GoogleScript.ScriptListener() {
                         @Override
                         public void onExecuted(GoogleScript script, Operation op) {
                             if (op == null || op.getError() != null) {
@@ -71,6 +71,23 @@ public class GasMain {
                                     e.printStackTrace();
                                 }
                                 handler.post(runnable);
+                            }
+                        }
+                    });
+        }else if(method.equals("GetUser")){
+            gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null, "GetUser",
+                    null, new GoogleScript.ScriptListener() {
+                        @Override
+                        public void onExecuted(GoogleScript script, Operation op) {
+                            if (op == null || op.getError() != null) {
+                                System.out.println("Script結果:エラー\n");
+                                if (op != null) {
+                                    System.out.println(op.getError());
+                                }
+                            } else {
+                                //戻ってくる型は、スクリプト側の記述によって変わる
+                                s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
+                                System.out.println("Script結果:成功\n");
                             }
                         }
                     });
