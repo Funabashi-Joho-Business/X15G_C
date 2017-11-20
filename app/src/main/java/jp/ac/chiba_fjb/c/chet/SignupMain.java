@@ -6,9 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import com.google.api.services.script.model.Operation;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
@@ -18,19 +16,24 @@ import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
  */
 
 public class SignupMain implements Serializable{
-    private String userid;
-    private String username;
+    private static String userid;
+    private static String username;
 
     public SignupMain(String username) {
         this.userid = makeID();
         this.username = username;
+        System.out.println(this.userid);
+        System.out.println(this.username);
     }
 
     public void main(final FragmentActivity activity){
         List<Object> params = new ArrayList<>();
 
-        params.add(userid);
-        params.add(username);
+        params.add(this.userid);
+        params.add(this.username);
+
+        System.out.println(this.userid);
+        System.out.println(this.username);
 
         GoogleScript gas = ((MainActivity) activity).getGas();
         gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"User",
@@ -46,12 +49,14 @@ public class SignupMain implements Serializable{
                  //戻ってくる型は、スクリプト側の記述によって変わる
 //                     s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                     System.out.println("Script結果:成功\n");
+                    ArrayList<ArrayList<Object>> s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
+                    System.out.println(s.get(0).get(1));
                  }
             }
         });
     }
     private String makeID(){
-        int ran = (int)Math.random()*1000;
+        int ran = (int)(Math.random()*1000);
         return String.valueOf(ran);
     }
 }

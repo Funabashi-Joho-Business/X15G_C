@@ -3,6 +3,7 @@ package jp.ac.chiba_fjb.c.chet;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -35,6 +36,9 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private SupportMapFragment mapFragment;
     private ImageButton ib;
     private Button b;
+    private Handler handler;
+    private Runnable run;
+    private boolean flg = true;
     private static TextView minute;
     private static RouteData.Routes r;
     private static String destination;
@@ -74,12 +78,26 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                flg = false;
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.menubox, new MenuFragment());
                 ft.commit();
             }
         });
-        new GasMain().main(getActivity(),getContext(),"Return");
+
+        handler = new Handler();
+        run = new Runnable() {
+            int count = 0;
+            @Override
+            public void run () {
+                if(flg) {
+                    new GasMain().main(getActivity(), getContext(), "Return");
+                }
+                handler.postDelayed(this, 3000);
+            }
+        };
+        handler.post(run);
+
         return view;
     }
 
@@ -140,8 +158,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         try{
             s = r.legs[0].end_address;
         }catch (NullPointerException e){
-
+            e.printStackTrace();
         }
         return s;
+    }
+    public void setFlg(boolean flg){
+        this.flg = flg;
     }
 }
