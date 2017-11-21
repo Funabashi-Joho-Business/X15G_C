@@ -85,18 +85,18 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             }
         });
 
-        handler = new Handler();
-        run = new Runnable() {
-            int count = 0;
-            @Override
-            public void run () {
-                if(flg) {
-                    new GasMain().main(getActivity(), getContext(), "Return");
-                }
-                handler.postDelayed(this, 3000);
-            }
-        };
-        handler.post(run);
+//        handler = new Handler();
+//        run = new Runnable() {
+//            int count = 0;
+//            @Override
+//            public void run () {
+//                if(flg) {
+//                    new GasMain().main(getActivity(), getContext(), "Return");
+//                }
+//                handler.postDelayed(this, 3000);
+//            }
+//        };
+//        handler.post(run);
 
         return view;
     }

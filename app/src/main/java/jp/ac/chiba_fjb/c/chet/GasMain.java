@@ -4,14 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.api.services.script.model.Operation;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 
@@ -53,14 +53,14 @@ public class GasMain {
                         @Override
                         public void onExecuted(GoogleScript script, Operation op) {
                             if (op == null || op.getError() != null) {
-                                System.out.println("Script結果:エラー\n");
+                                System.out.println("Main Script結果:エラー\n");
                                 if (op != null) {
                                     System.out.println(op.getError());
                                 }
                             } else {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
-                                System.out.println("Script結果:成功\n");
+                                System.out.println("Main Script結果:成功\n");
                                 handler.post(runnable);
                             }
                         }
@@ -71,14 +71,56 @@ public class GasMain {
                         @Override
                         public void onExecuted(GoogleScript script, Operation op) {
                             if (op == null || op.getError() != null) {
-                                System.out.println("Script結果:エラー\n");
+                                System.out.println("GetUser Script結果:エラー\n");
                                 if (op != null) {
                                     System.out.println(op.getError());
                                 }
                             } else {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
-                                System.out.println("Script結果:成功\n");
+                                System.out.println("Script結果:GetUser成功\n");
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ArrayList<String> subuser = new ArrayList<>();
+                                        new InvitationFragment().user = new HashMap<String, String>();
+                                        for (int i = 0; i < s.size(); i++) {
+                                            subuser.add(s.get(i).get(1).toString());
+                                        }
+                                        for (int i = 0; i < subuser.size(); i++) {
+                                            //追加先のインスタンスの取得
+                                            LinearLayout layout;
+                                            //fragment_invitation_userのレイアウトを読み込んで追加
+                                            layout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_invitation_user, null);   //レイアウトをその場で生成
+                                            layout.setOrientation(LinearLayout.HORIZONTAL);
+
+                                            ImageView image = new ImageView(context);
+                                            TextView username = new TextView(context);
+
+                                            //取得したレイアウトにidを設定する
+                                            username.setId(i);
+                                            //setImageResource(ID);
+                                            username.setText(subuser.get(i));
+
+                                            username.setTextSize(24);
+
+                                            username.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    TextView tv = view.findViewById(view.getId());
+                                                    tv.setBackgroundColor(101010);
+                                                    tv.setAlpha(0.5f);
+
+                                                    new InvitationFragment().user.put(String.valueOf(view.getId()), tv.getText().toString());
+                                                }
+                                            });
+
+                                            layout.addView(image);
+                                            layout.addView(username);
+                                            new InvitationFragment().Veritcal.addView(layout);                                                         //Viewの追加
+                                        }
+                                    }
+                                });
                             }
                         }
                     });
