@@ -20,20 +20,24 @@ public class SignupFragment extends Fragment {
 
     Button singup;
     TextView username;
+    TextView meil;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
         username = view.findViewById(R.id.username);
+        meil = view.findViewById(R.id.meil);
         singup = view.findViewById(R.id.signup);
         singup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SignupMain sup = new SignupMain(username.getText().toString());
-                sup.main(getActivity());
-                DataStorage.store(getContext(),sup);
+                if(!(username.getText().equals("")) && !(meil.getText().equals(""))){
+                    SignupMain sup = new SignupMain(username.getText().toString(),meil.getText().toString());
+                    sup.main(getActivity());
+                    DataStorage.store(getContext(), sup);
 //                System.out.println(DataStorage.load(getContext()));
+                }
             }
         });
         return view;

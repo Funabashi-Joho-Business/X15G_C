@@ -18,10 +18,12 @@ import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 public class SignupMain implements Serializable{
     private static String userid;
     private static String username;
+    private static String meil;
 
-    public SignupMain(String username) {
+    public SignupMain(String username,String meil) {
         this.userid = makeID();
         this.username = username;
+        this.meil = meil;
         System.out.println(this.userid);
         System.out.println(this.username);
     }
@@ -31,6 +33,7 @@ public class SignupMain implements Serializable{
 
         params.add(this.userid);
         params.add(this.username);
+        params.add(this.meil);
 
         System.out.println(this.userid);
         System.out.println(this.username);
@@ -49,8 +52,8 @@ public class SignupMain implements Serializable{
                  //戻ってくる型は、スクリプト側の記述によって変わる
 //                     s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                     System.out.println("Script結果:成功\n");
-                    ArrayList<ArrayList<Object>> s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
-                    System.out.println(s.get(0).get(1));
+//                    ArrayList<ArrayList<Object>> s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
+//                    System.out.println(s.get(0).get(1));
                  }
             }
         });

@@ -27,7 +27,10 @@ public class RouteData{
 	}
 	@JsonIgnoreProperties(ignoreUnknown=true)
 	public static class Steps{
+		public Distance distance;
+		public Duration duration;
 		public Location end_location;
+		public String html_instructions;
 		public Location start_location;
 		public Polyline polyline;
 	}

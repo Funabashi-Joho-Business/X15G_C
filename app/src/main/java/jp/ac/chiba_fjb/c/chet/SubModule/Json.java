@@ -43,6 +43,8 @@ public class Json{
             }
             is.close();
             br.close();
+            System.out.println(mapper);
+            System.out.println(mapper.getClass());
             return mapper.readValue(sb.toString(),valueType);
         }catch (Exception e){
             e.printStackTrace();

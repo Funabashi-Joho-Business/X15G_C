@@ -23,7 +23,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import jp.ac.chiba_fjb.c.chet.SubModule.parseJsonpOfDirectionAPI;
 
 public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
 
@@ -38,11 +41,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private Button b;
     private Handler handler;
     private Runnable run;
-    private boolean flg = true;
     private static TextView minute;
     private static RouteData.Routes r;
     private static String destination;
+    private boolean mFlg;
 
+    public static String info_A;
+    public static String info_B;
+    public static String posinfo;
     public Pin p;
     public static double latitude;
     public static double longitude;
@@ -78,7 +84,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                flg = false;
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.menubox, new MenuFragment());
                 ft.commit();
@@ -90,25 +95,33 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             int count = 0;
             @Override
             public void run () {
-                if(flg) {
+                if(mFlg) {
                     new GasMain().main(getActivity(), getContext(), "Return");
                 }
                 handler.postDelayed(this, 3000);
             }
         };
         handler.post(run);
-
         return view;
     }
-
+    @Override
+    public void onStart() {
+        mFlg = true;
+        super.onStart();
+    }
+    @Override
+    public void onStop() {
+        mFlg = false;
+        super.onStop();
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //自分の位置をマップ上に表示
         p = new Pin(getActivity(), mMap);
         mMap.setOnMapClickListener(this);
+        System.out.println("MAP表示完了！！");
     }
-
     @Override
     public void onMapClick(LatLng latLng) {
         LatLng lat = new LatLng(latLng.latitude, latLng.longitude);
@@ -123,9 +136,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             RouteReader.recvRoute(origin, destination, this);
         }
     }
-
     @Override
-    public void onRoute(RouteData routeData) {
+    public void onRoute(RouteData routeData) {// routeData = JSONData
         //ルート受け取り処理
         if (routeData != null && routeData.routes.length > 0 && routeData.routes[0].legs.length > 0) {
             r = routeData.routes[0];
@@ -135,23 +147,10 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lng)).title(r.legs[0].start_address));
             mMap.addMarker(new MarkerOptions().position(new LatLng(end.lat, end.lng)).title(r.legs[0].end_address));
             minute.setText(r.legs[0].duration.text+"  "+r.legs[0].distance.text);
-            RouteSearch();
+            List<List<HashMap<String,String>>> list = new parseJsonpOfDirectionAPI().parse(routeData);
+            System.out.println("Thread実行"+list);
+            RouteSearch(list);
         }
-    }
-    public void RouteSearch(){
-        List<LatLng> route = new ArrayList<LatLng>();
-        for (RouteData.Steps i : r.legs[0].steps) {
-            route.add(new LatLng(i.start_location.lat,i.start_location.lng));
-            route.add(new LatLng(i.end_location.lat,i.end_location.lng));
-        }
-        PolylineOptions options = new PolylineOptions();
-        for (LatLng latLng : route) {
-            options.add(latLng);
-        }
-        options.geodesic(true);
-        options.color(Color.BLUE);
-        options.width(15);
-        mMap.addPolyline(options);
     }
     public String getCheck(){
         String s = "";
@@ -162,7 +161,29 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         }
         return s;
     }
-    public void setFlg(boolean flg){
-        this.flg = flg;
+    public void RouteSearch(List<List<HashMap<String, String>>> result){
+        ArrayList<LatLng> points = null;
+        PolylineOptions lineOptions = null;
+        MarkerOptions markerOptions = new MarkerOptions();
+        if(result.size() != 0){
+            for(int i=0;i<result.size();i++){
+                points = new ArrayList<LatLng>();
+                lineOptions = new PolylineOptions();
+                List<HashMap<String, String>> path = result.get(i);
+                for(int j=0;j<path.size();j++){
+                    HashMap<String,String> point = path.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+                    points.add(position);
+                }
+                //ポリライン
+                lineOptions.addAll(points);
+                lineOptions.width(15);
+                lineOptions.color(Color.BLUE);
+            }
+            //描画
+            mMap.addPolyline(lineOptions);
+        }
     }
 }

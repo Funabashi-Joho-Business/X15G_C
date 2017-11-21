@@ -4,8 +4,11 @@ import android.os.Handler;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
 
 import jp.ac.chiba_fjb.c.chet.SubModule.Json;
+import jp.ac.chiba_fjb.c.chet.SubModule.parseJsonpOfDirectionAPI;
 
 
 /**
@@ -17,7 +20,7 @@ public class RouteReader {
 	public interface  RouteListener{
 		void onRoute(RouteData routeData);
 	}
-
+	static List<List<HashMap<String, String>>> list;
 	public static boolean recvRoute(String origin, String dest, final RouteListener listener){
 		String url = null;
 		try {
@@ -33,6 +36,8 @@ public class RouteReader {
 		}
 		final Handler handler = new Handler();
 		final String finalUrl = url;
+//        final RouteData routeData = Json.send(finalUrl,null,RouteData.class);
+//        list = new parseJsonpOfDirectionAPI().parse(routeData);
 		new Thread(){
 			@Override
 			public void run() {

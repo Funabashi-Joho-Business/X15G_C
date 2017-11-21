@@ -13,6 +13,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
 
     MainActivity ma = new MainActivity();
     FragmentTransaction ft;
+    boolean flg = true;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -28,12 +29,12 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.setting).setOnClickListener(this);
         view.findViewById(R.id.secession).setOnClickListener(this);
         view.findViewById(R.id.test).setOnClickListener(this);
+
         return view;
     }
 
     @Override
     public void onClick(View view) {
-        new MainFragment().setFlg(true);
         switch (view.getId()){
             case R.id.menu:
                 getFragmentManager().beginTransaction().remove(this).commit();
