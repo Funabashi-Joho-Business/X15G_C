@@ -36,8 +36,6 @@ public class RouteReader {
 		}
 		final Handler handler = new Handler();
 		final String finalUrl = url;
-//        final RouteData routeData = Json.send(finalUrl,null,RouteData.class);
-//        list = new parseJsonpOfDirectionAPI().parse(routeData);
 		new Thread(){
 			@Override
 			public void run() {

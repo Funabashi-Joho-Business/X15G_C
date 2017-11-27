@@ -53,10 +53,10 @@ public class parseJsonpOfDirectionAPI {
 
                     for(int k=0;k<jsonSteps.length;k++){
                         String polyline = "";
-                        polyline = jsonSteps[k].polyline.points;//(String)((JSONObject)((JSONObject)jsonSteps.get(k)).get("polyline")).get("points");
-                        String instructions = jsonSteps[k].html_instructions;//(String)((JSONObject)(JSONObject)jsonSteps.get(k)).getString("html_instructions");
-                        String duration_value = jsonSteps[k].duration.value;//(String)((JSONObject)((JSONObject)jsonSteps.get(k)).get("duration")).getString("value");
-                        String duration_txt = jsonSteps[k].duration.text;//(String)((JSONObject)((JSONObject)jsonSteps.get(k)).get("duration")).getString("text");
+                        polyline = jsonSteps[k].polyline.points;
+                        String instructions = jsonSteps[k].html_instructions;
+                        String duration_value = jsonSteps[k].duration.value;
+                        String duration_txt = jsonSteps[k].duration.text;
 
                         temp += instructions + "/" + duration_value + " m /" + duration_txt + "<br><br>";
 
@@ -115,7 +115,6 @@ public class parseJsonpOfDirectionAPI {
                     (((double) lng / 1E5)));
             poly.add(p);
         }
-
         return poly;
     }
 }

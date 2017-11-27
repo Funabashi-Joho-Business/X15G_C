@@ -59,9 +59,13 @@ public class GasMain {
                                     }
                                 } else {
                                     //戻ってくる型は、スクリプト側の記述によって変わる
-                                    s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
-                                    System.out.println("Script結果:成功\n");
-                                    handler.post(runnable);
+                                    try {
+                                        s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
+                                        System.out.println("Script結果:成功\n");
+                                        handler.post(runnable);
+                                    }catch (Exception e){
+                                        e.printStackTrace();
+                                    }
 
                                 }
                             }
@@ -86,7 +90,6 @@ public class GasMain {
                         });
             }
     }
-
     public ArrayList<ArrayList<Object>> getArray(){
         return s;
     }

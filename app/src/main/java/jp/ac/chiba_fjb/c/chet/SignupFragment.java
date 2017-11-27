@@ -3,6 +3,7 @@ package jp.ac.chiba_fjb.c.chet;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,9 @@ public class SignupFragment extends Fragment {
                     SignupMain sup = new SignupMain(username.getText().toString(),meil.getText().toString());
                     sup.main(getActivity());
                     DataStorage.store(getContext(), sup);
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.maindisplay,new MainFragment());
+                    ft.commit();
 //                System.out.println(DataStorage.load(getContext()));
                 }
             }

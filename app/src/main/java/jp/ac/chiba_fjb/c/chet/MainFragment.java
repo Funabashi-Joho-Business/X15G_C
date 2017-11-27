@@ -147,6 +147,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lng)).title(r.legs[0].start_address));
             mMap.addMarker(new MarkerOptions().position(new LatLng(end.lat, end.lng)).title(r.legs[0].end_address));
             minute.setText(r.legs[0].duration.text+"  "+r.legs[0].distance.text);
+
             List<List<HashMap<String,String>>> list = new parseJsonpOfDirectionAPI().parse(routeData);
             System.out.println("Thread実行"+list);
             RouteSearch(list);
@@ -177,6 +178,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
                     LatLng position = new LatLng(lat, lng);
                     points.add(position);
                 }
+
                 //ポリライン
                 lineOptions.addAll(points);
                 lineOptions.width(15);
