@@ -29,7 +29,11 @@ public class GoogleAccount {
     private Context mContext;
     private GoogleAccountCredential mCredential;
     private String mAccountName;
-    private static final String[] SCOPES = {"https://www.googleapis.com/auth/drive"};
+    private static final String[] SCOPES = {
+            "https://www.googleapis.com/auth/drive",
+            "https://www.googleapis.com/auth/drive.file",
+            "https://www.googleapis.com/auth/spreadsheets",
+            "https://www.googleapis.com/auth/script.send_mail"};
 
     public GoogleAccount(Context con, String[] scope) {
         //Activityの保存

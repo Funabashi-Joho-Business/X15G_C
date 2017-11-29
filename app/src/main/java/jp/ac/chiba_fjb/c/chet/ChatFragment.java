@@ -45,10 +45,6 @@ public class ChatFragment extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.maindisplay,new GasFragment());
-//                ft.addToBackStack(null);
-//                ft.commit();
 
                 EditText e = (EditText) getView().findViewById(R.id.chettext2);
                 new MainActivity().text = e.getText().toString();
@@ -80,6 +76,7 @@ public class ChatFragment extends Fragment {
     }
 
     public void reload(){
+        new GasMain().main(getActivity(),getContext(),"Return");
         s = new GasMain().getArray();
         check.setText(new MainFragment().getCheck());
         chatbox.removeAllViews();

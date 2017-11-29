@@ -34,7 +34,11 @@ public class GoogleScript extends GoogleAccount
 
 
 
-	private static final String[] SCOPES = {"https://www.googleapis.com/auth/drive"};
+	private static final String[] SCOPES = {
+			"https://www.googleapis.com/auth/drive",
+			"https://www.googleapis.com/auth/drive.file",
+			"https://www.googleapis.com/auth/spreadsheets",
+			"https://www.googleapis.com/auth/script.send_mail"};
 	private Set<ScriptInfo> mScripts = new HashSet<>();
 	private Activity mContext;
 	private Script mService;
@@ -83,7 +87,7 @@ public class GoogleScript extends GoogleAccount
 			if (info.params != null)
 				request.setParameters(info.params);
 //			request.setDevMode(true);//デベロッパーモード
-			final Operation op = mService.scripts().run(info.scriptId, request).setKey(info.apiKey).execute();
+			final Operation op = mService.scripts().run(info.scriptId, request).execute();//.setKey(info.apiKey)
 			if (info.listener != null) {
 				mContext.runOnUiThread(new Runnable() {
 					@Override

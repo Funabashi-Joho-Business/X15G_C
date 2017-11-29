@@ -1,5 +1,6 @@
 package jp.ac.chiba_fjb.c.chet;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,11 +14,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class InvitationFragment extends Fragment{
+public class InvitationFragment extends Fragment {
 
     private static ArrayList<ArrayList<Object>> s;
-
-    public static ArrayList<String> subuser;
+    public static ArrayList<String> mailuser = new ArrayList<String>();
     public static HashMap<String,String> user;
     public static LinearLayout Veritcal;
     public ImageView image;
@@ -46,6 +46,12 @@ public class InvitationFragment extends Fragment{
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.maindisplay, new MainFragment());
                 ft.commit();
+            }
+        });
+        view.findViewById(R.id.shoutai).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                new GasMain().main(getActivity(), getContext(), "MailUser");
             }
         });
         return view;

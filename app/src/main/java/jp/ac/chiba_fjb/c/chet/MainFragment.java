@@ -2,6 +2,7 @@ package jp.ac.chiba_fjb.c.chet;
 
 
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -45,6 +46,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     private static RouteData.Routes r;
     private static String destination;
     private boolean mFlg;
+    private static String sheetid;
 
     public static String info_A;
     public static String info_B;
@@ -70,11 +72,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.maindisplay,new GasFragment());
-//                ft.addToBackStack(null);
-//                ft.commit();
-
                 EditText e = (EditText) getView().findViewById(R.id.chettext1);
                 new MainActivity().text = e.getText().toString();
                 new GasMain().main(getActivity(),getContext(),"Main");
@@ -92,7 +89,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
 
         handler = new Handler();
         run = new Runnable() {
-            int count = 0;
             @Override
             public void run () {
                 if(mFlg) {
@@ -137,7 +133,7 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         }
     }
     @Override
-    public void onRoute(RouteData routeData) {// routeData = JSONData
+    public void onRoute(RouteData routeData) {
         //ルート受け取り処理
         if (routeData != null && routeData.routes.length > 0 && routeData.routes[0].legs.length > 0) {
             r = routeData.routes[0];
@@ -187,5 +183,14 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             //描画
             mMap.addPolyline(lineOptions);
         }
+    }
+    public void setmFlg(boolean mflg){
+        this.mFlg = mflg;
+    }
+    public String getSheetid(){
+        return this.sheetid;
+    }
+    public void setSheetid(String sheetid){
+        this.sheetid = sheetid;
     }
 }
