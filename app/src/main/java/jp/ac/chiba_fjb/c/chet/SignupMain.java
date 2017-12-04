@@ -1,10 +1,13 @@
 package jp.ac.chiba_fjb.c.chet;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.api.services.script.model.Operation;
 
+import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,27 +19,17 @@ import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
  */
 
 public class SignupMain implements Serializable{
-    private static String userid;
     private static String username;
     private static String meil;
 
-    public SignupMain(String username,String meil) {
-        this.userid = makeID();
-        this.username = username;
-        this.meil = meil;
-        System.out.println(this.userid);
-        System.out.println(this.username);
+    public SignupMain() {
     }
 
     public void main(final FragmentActivity activity){
         List<Object> params = new ArrayList<>();
 
-        params.add(this.userid);
         params.add(this.username);
         params.add(this.meil);
-
-        System.out.println(this.userid);
-        System.out.println(this.username);
 
         GoogleScript gas = ((MainActivity) activity).getGas();
         gas.execute("MElQvDuPso7D_yra9PVEL7zGtL2HAWDts", null ,"User",
@@ -58,8 +51,30 @@ public class SignupMain implements Serializable{
             }
         });
     }
-    private String makeID(){
-        int ran = (int)(Math.random()*1000);
-        return String.valueOf(ran);
+    public String getUsername(){
+        return this.username;
+    }
+    public String getMeil(){
+        return this.meil;
+    }
+    public void loadData(Activity activity, Context context){
+        try {
+            FileInputStream fileInputStream;
+            fileInputStream = activity.openFileInput("Chet");
+            byte[] readBytes = new byte[fileInputStream.available()];
+            fileInputStream.read(readBytes);
+            String readString = new String(readBytes);
+            System.out.println(context.getFilesDir()+":"+readString);
+            setData(readString);
+            fileInputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void setData(String s){
+        String[] a = s.split(",");
+        System.out.println(a[0]+","+a[1]);
+        this.username = a[0];
+        this.meil = a[1];
     }
 }

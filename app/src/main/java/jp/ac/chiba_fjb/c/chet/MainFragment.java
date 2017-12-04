@@ -20,41 +20,47 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import jp.ac.chiba_fjb.c.chet.SubModule.parseJsonpOfDirectionAPI;
 
+import static jp.ac.chiba_fjb.c.chet.Pin.origin;
+
 public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
 
 
     public MainFragment() {
-        // Required empty public constructor
     }
 
     private static GoogleMap mMap;
+    private static TextView minute;
+    private static RouteData.Routes r;
+    private static String destination;
+    private static String sheetid;
+    private static GasMain gm;
+    private static HashMap<String,Marker> MarkerArray = new HashMap<String, Marker>();
+    private boolean mFlg;
     private SupportMapFragment mapFragment;
     private ImageButton ib;
     private Button b;
     private Handler handler;
     private Runnable run;
-    private static TextView minute;
-    private static RouteData.Routes r;
-    private static String destination;
-    private boolean mFlg;
-    private static String sheetid;
+
 
     public static String info_A;
     public static String info_B;
     public static String posinfo;
-    public Pin p;
     public static double latitude;
     public static double longitude;
     public static LinearLayout chatbox;
+    public Pin p;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,17 +70,19 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment);
         mapFragment.getMapAsync(this);
 
-        chatbox = view.findViewById(R.id.chatbox);
+        gm = new GasMain();
         minute = view.findViewById(R.id.minute);
         b = view.findViewById(R.id.Transmission);
         ib = (ImageButton) view.findViewById(R.id.ImageButton);
+        chatbox = (LinearLayout) view.findViewById(R.id.chatbox);
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EditText e = (EditText) getView().findViewById(R.id.chettext1);
                 new MainActivity().text = e.getText().toString();
-                new GasMain().main(getActivity(),getContext(),"Main");
+                gm.main(getActivity(),getContext(),"Main");
+                gm.getAllUser(getContext());
             }
         });
 
@@ -92,7 +100,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             @Override
             public void run () {
                 if(mFlg) {
-                    new GasMain().main(getActivity(), getContext(), "Return");
+                    gm.main(getActivity(), getContext(), "Main");
+                    Route(origin);
                 }
                 handler.postDelayed(this, 3000);
             }
@@ -116,6 +125,8 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         //自分の位置をマップ上に表示
         p = new Pin(getActivity(), mMap);
         mMap.setOnMapClickListener(this);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         System.out.println("MAP表示完了！！");
     }
     @Override
@@ -128,9 +139,11 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         Route(origin);
     }
     public void Route(String origin){
-        if(destination != null) {
+        mMap.clear();
+        if(destination != null && origin != null) {
             RouteReader.recvRoute(origin, destination, this);
         }
+        setUserPin();
     }
     @Override
     public void onRoute(RouteData routeData) {
@@ -139,7 +152,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
             r = routeData.routes[0];
 //            RouteData.Location start = r.legs[0].start_location;
             RouteData.Location end = r.legs[0].end_location;
-            mMap.clear();
 //            mMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lng)).title(r.legs[0].start_address));
             mMap.addMarker(new MarkerOptions().position(new LatLng(end.lat, end.lng)).title(r.legs[0].end_address));
             minute.setText(r.legs[0].duration.text+"  "+r.legs[0].distance.text);
@@ -192,5 +204,26 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     }
     public void setSheetid(String sheetid){
         this.sheetid = sheetid;
+    }
+    public void setUserPin(){
+        if(gm.getAllUser(getContext()) != null) {
+            ArrayList<String> user = gm.getAllUser(getContext());
+            ArrayList<ArrayList<Object>> s = gm.getArray();
+
+            HashMap<String,Integer> UserArrayIndex = new HashMap<>();
+            for(int SIndex = 0;SIndex < s.size();SIndex++) {
+                if (UserArrayIndex.containsKey(s.get(SIndex).get(0).toString()) || user.contains(s.get(SIndex).get(0).toString())) {
+                    UserArrayIndex.put(s.get(SIndex).get(0).toString(), SIndex);
+               }
+            }
+            for (int UserIndex = 0; UserIndex < user.size(); UserIndex++) {
+                int i = UserArrayIndex.get(user.get(UserIndex));
+                BigDecimal lat = (BigDecimal) s.get(i).get(1);
+                BigDecimal lon = (BigDecimal) s.get(i).get(2);
+                LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
+                Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(s.get(i).get(0).toString()));
+                MarkerArray.put(s.get(i).get(0).toString(), m);
+            }
+        }
     }
 }

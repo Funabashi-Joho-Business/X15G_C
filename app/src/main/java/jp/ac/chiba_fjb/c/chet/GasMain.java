@@ -1,5 +1,6 @@
 package jp.ac.chiba_fjb.c.chet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -12,7 +13,10 @@ import com.google.api.services.script.model.Operation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+
+import jp.ac.chiba_fjb.c.chet.SubModule.DataStorage;
 import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 
 /**
@@ -22,7 +26,8 @@ import jp.ac.chiba_fjb.c.chet.SubModule.GoogleScript;
 public class GasMain {
 
     private static ArrayList<ArrayList<Object>> s;
-    private final MainFragment mf = new MainFragment();
+    private static SignupMain sm;
+    private static MainFragment mf;
     private Handler handler;
     private Runnable runnable;
     private LinearLayout layout;
@@ -31,6 +36,8 @@ public class GasMain {
     public void main(final FragmentActivity activity, final Context context,String method){
         String chettext = new MainActivity().text;
         final List<Object> params = new ArrayList<>();
+        mf = new MainFragment();
+        sm = new SignupMain();
 
         handler = new Handler();
 
@@ -40,15 +47,15 @@ public class GasMain {
             }else{
                 params.add("null");
             }
-            params.add("userid3");
-            params.add("username");
-            params.add(this.mf.p.my);
-            params.add(this.mf.p.mx);
-            params.add(this.mf.latitude);
-            params.add(this.mf.longitude);
+            params.add(sm.getUsername());
+            params.add(mf.p.my);
+            params.add(mf.p.mx);
+            params.add(mf.latitude);
+            params.add(mf.longitude);
             params.add("imageurl");
-            params.add("parentid");
+            params.add(sm.getMeil());
             params.add(chettext);
+            new MainActivity().text = "";
         }else if(method.equals("MailUser")){
                 params.add(new InvitationFragment().mailuser);
         }else if(method.equals("Return")){
@@ -76,7 +83,7 @@ public class GasMain {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                                 System.out.println("Main Script結果:成功\n");
-                                setRunnable(context);
+                                setRunnable(activity,context);
                                 handler.post(runnable);
                             }
                         }
@@ -105,22 +112,15 @@ public class GasMain {
                                             new InvitationFragment().user.put(s.get(i).get(1).toString(),s.get(i).get(2).toString());
                                         }
                                         for (int i = 0; i < usertext.size(); i++) {
-                                            //追加先のインスタンスの取得
-
-                                            //fragment_invitation_userのレイアウトを読み込んで追加
                                             layout = (LinearLayout) activity.getLayoutInflater().inflate(R.layout.fragment_invitation_user, null);   //レイアウトをその場で生成
                                             layout.setOrientation(LinearLayout.HORIZONTAL);
 
                                             ImageView image = new ImageView(context);
                                             TextView username = new TextView(context);
 
-                                            //取得したレイアウトにidを設定する
                                             username.setId(i);
-                                            //setImageResource(ID);
                                             username.setText(usertext.get(i));
-
                                             username.setTextSize(24);
-
                                             username.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
@@ -176,19 +176,43 @@ public class GasMain {
                                 //戻ってくる型は、スクリプト側の記述によって変わる
                                 s = (ArrayList<ArrayList<Object>>) op.getResponse().get("result");
                                 System.out.println("ReturnScript結果:成功"+params.get(0)+"\n");
-                                setRunnable(context);
+                                setRunnable(activity,context);
                                 handler.post(runnable);
                             }
                         }
                     });
         }
     }
-
     public ArrayList<ArrayList<Object>> getArray(){
-        return s;
+        if(s == null){
+            return null;
+        }else if(s.get(0).get(0).toString().isEmpty()) {
+            return null;
+        }else{
+            return s;
+        }
+    }
+    public  ArrayList<String> getAllUser(Context context){
+        if(getArray() != null) {
+            ArrayList<ArrayList<Object>> aao = getArray();
+            ArrayList<String> array = new ArrayList<>();
+            for (int index = 0; index < aao.size(); index++) {
+                if (!(aao.get(index).get(0).equals(sm.getUsername()))) {
+                    array.add(aao.get(index).get(0).toString());
+                }
+            }
+
+            array = new ArrayList<String>(new HashSet<>(array));
+            for (int i = 0; i < array.size(); i++) {
+                System.out.println("array.get(" + i + ")=" + array.get(i));
+            }
+
+            return array;
+        }
+        return null;
     }
     public TextView setTO(TextView tv,int i){
-        tv.setText(s.get(i).get(8).toString());
+        tv.setText(s.get(i).get(7).toString());
         tv.setBackgroundResource(R.drawable.frame_style_roundness_blue);
         tv.setTextSize(18);
         tv.setGravity(Gravity.CENTER_VERTICAL);
@@ -204,33 +228,54 @@ public class GasMain {
         ImageView iv = new ImageView(context);
         iv.setImageURI(null); //((URL)s.get(index).get(6)
         ll.setOrientation(LinearLayout.HORIZONTAL);
+        ll.setPadding(10,10,10,10);
         ll.addView(iv);
         return ll;
     }
-    private void setRunnable(final Context context){
+    private void setRunnable(final Activity activity,final Context context){
         runnable = new Runnable() {
             @Override
             public void run() {
-                mf.chatbox.removeAllViews();
-                int cnt = s.size();
-                if(s.get(0).size() == 10) {
-                    for (int i = 0; i < 3; i++) {
-                        cnt--;
-                        if (cnt < 0) {
-                            break;
-                        } else if (s.get(cnt).get(8).equals("")) {
-                            i--;
-                            continue;
+                MainFragment mf = new MainFragment();
+                if(!(s.get(0).get(0).toString().isEmpty())) {
+                    LinearLayout[] llbox = new LinearLayout[3];
+                    ArrayList<String> user = getAllUser(context);
+                    mf.chatbox.removeAllViews();
+                    int cnt = s.size();
+                    if (s.get(0).size() == 9) {
+                        for (int i = 0; i < 3; i++) {
+                            cnt--;
+                            if (cnt < 0) {
+                                break;
+                            } else if (s.get(cnt).get(7).equals("")) {
+                                i--;
+                                continue;
+                            } else if (user.contains(s.get(cnt).get(0))) {
+                                LinearLayout ll = new LinearLayout(context);
+                                TextView tv = new TextView(context);
+                                setYourLO(ll, context);
+                                setTO(tv, cnt);
+                                ll.addView(tv);
+                                llbox[i] = ll;
+                            } else {
+                                LinearLayout ll = new LinearLayout(context);
+                                TextView tv = new TextView(context);
+                                setMyLO(ll);
+                                setTO(tv, cnt);
+                                ll.addView(tv);
+                                llbox[i] = ll;
+                            }
                         }
-                        LinearLayout ll = new LinearLayout(context);
-                        TextView tv = new TextView(context);
-                        setMyLO(ll);
-                        setTO(tv, cnt);
-                        ll.addView(tv);
-                        mf.chatbox.addView(ll);
+
+                        for (int i = 2; i >= 0; i--) {
+                            if(llbox[i] != null) {
+                                mf.chatbox.addView(llbox[i]);
+                            }
+                        }
                     }
                 }
             }
         };
+
     }
 }

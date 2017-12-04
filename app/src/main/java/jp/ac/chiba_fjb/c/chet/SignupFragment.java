@@ -10,6 +10,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import jp.ac.chiba_fjb.c.chet.SubModule.DataStorage;
 
 public class SignupFragment extends Fragment {
@@ -21,22 +27,42 @@ public class SignupFragment extends Fragment {
 
     Button singup;
     TextView username;
-    TextView meil;
+    TextView usermeil;
+    File file;
+    byte[] name;
+    byte[] meil;
+    byte[] deta;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
 
         username = view.findViewById(R.id.username);
-        meil = view.findViewById(R.id.meil);
+        usermeil = view.findViewById(R.id.meil);
         singup = view.findViewById(R.id.signup);
         singup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(username.getText().equals("")) && !(meil.getText().equals(""))){
-                    SignupMain sup = new SignupMain(username.getText().toString(),meil.getText().toString());
+                if(!(username.getText().equals("")) && !(usermeil.getText().equals(""))){
+                    try {
+                        name = (username.getText().toString()+",").getBytes();
+                        meil = usermeil.getText().toString().getBytes();
+
+                        file = new File(getContext().getFilesDir(),"Chet");
+                        FileOutputStream outputStream = getActivity().openFileOutput("Chet", getContext().MODE_PRIVATE);
+                        outputStream.write(name);
+                        outputStream.write(meil);
+                        outputStream.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    SignupMain sup = new SignupMain();
+                    sup.loadData(getActivity(),getContext());
                     sup.main(getActivity());
-                    DataStorage.store(getContext(), sup);
+
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.maindisplay,new MainFragment());
                     ft.commit();

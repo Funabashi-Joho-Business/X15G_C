@@ -21,7 +21,9 @@ public class Pin implements LocationSource, android.location.LocationListener {
     private MainFragment mf;
     public static double my;
     public static double mx;
+    public static String origin;
     public LatLng sydney;
+
 
 
     Pin(Context context, GoogleMap map) {
@@ -70,7 +72,7 @@ public class Pin implements LocationSource, android.location.LocationListener {
             mLastLocation = location;
             my = mLastLocation.getLatitude();
             mx = mLastLocation.getLongitude();
-            String origin = my +","+ mx;
+            origin = my +","+ mx;
             mf.Route(origin);
         }
     }

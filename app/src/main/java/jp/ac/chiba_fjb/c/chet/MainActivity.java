@@ -19,7 +19,7 @@ import jp.ac.chiba_fjb.c.chet.SubModule.Permission;
 public class MainActivity extends AppCompatActivity{
     private GoogleScript mGoogleScript;
     Permission mPermission;
-    public static String text;
+    public static String text = "";
     public static Matcher m;
     public static Intent intent;
     public GoogleScript getGas(){return mGoogleScript;}
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity{
                     public void run() {
                         setContentView(R.layout.activity_main);
                         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.maindisplay,new MainFragment());
+                        ft.replace(R.id.maindisplay,new SignupFragment());
                         ft.commit();
                     }
                 },2000);
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity{
         //必要に応じてアカウントや権限ダイアログの表示
         mGoogleScript.onActivityResult(requestCode,resultCode,data);
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
