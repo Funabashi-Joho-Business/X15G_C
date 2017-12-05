@@ -85,7 +85,7 @@ public class ChatFragment extends Fragment {
         for(int index = 0;index<s.size();index++){
             if(s.get(index).get(7).equals("")){
                 continue;
-            }else if(user.contains(s.get(index).get(1))) {
+            }else if(user.contains(s.get(index).get(0))) {
                 TextView tv = new TextView(getContext());
                 LinearLayout ll = new LinearLayout(getContext());
                 tv = new GasMain().setTO(tv, index);

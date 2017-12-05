@@ -45,7 +45,7 @@ public class SignupFragment extends Fragment {
     TextView username;
     TextView usermeil;
     ImageButton ib;
-    String base64;
+    String base64 = "aaa";
     File file;
     byte[] name;
     byte[] meil;
@@ -61,10 +61,10 @@ public class SignupFragment extends Fragment {
         ib.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.setType("image/*");
-                startActivityForResult(intent, READ_REQUEST_CODE);
+//                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+//                intent.addCategory(Intent.CATEGORY_OPENABLE);
+//                intent.setType("image/*");
+//                startActivityForResult(intent, READ_REQUEST_CODE);
             }
         });
         singup = view.findViewById(R.id.signup);
