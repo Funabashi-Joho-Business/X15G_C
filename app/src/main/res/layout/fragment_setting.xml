@@ -39,7 +39,7 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/image2"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="30dp"
@@ -48,14 +48,39 @@
                     app:srcCompat="@mipmap/ic_launcher" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="名前"
+                android:textSize="24sp" />
+
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/username"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/frame_style_roundness_white"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:text="名前" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="メールアドレス"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/meil"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/frame_style_roundness_white"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="メールアドレス" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -65,7 +90,7 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/button4"
+                    android:id="@+id/change"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/frame_style_roundness_white"

@@ -42,6 +42,7 @@ public class GasMain {
         handler = new Handler();
 
         if(method.equals("Main")){
+            sm.loadData(activity,context);
             if(mf.getSheetid() != null) {
                 params.add(mf.getSheetid());
             }else{
@@ -52,7 +53,7 @@ public class GasMain {
             params.add(mf.p.mx);
             params.add(mf.latitude);
             params.add(mf.longitude);
-            params.add("imageurl");
+            params.add("aaaa");
             params.add(sm.getMeil());
             params.add(chettext);
             new MainActivity().text = "";

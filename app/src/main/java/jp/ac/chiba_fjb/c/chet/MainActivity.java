@@ -1,5 +1,7 @@
 package jp.ac.chiba_fjb.c.chet;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +21,8 @@ import jp.ac.chiba_fjb.c.chet.SubModule.Permission;
 
 public class MainActivity extends AppCompatActivity{
     private GoogleScript mGoogleScript;
+    private Activity activity;
+    private Context context;
     Permission mPermission;
     public static String text = "";
     public static Matcher m;
@@ -27,6 +32,9 @@ public class MainActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.top);
+
+        activity = this.activity;
+        context = this.context;
 
         intent = getIntent();
         if(intent != null && intent.getDataString() != null){
@@ -55,9 +63,27 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void run() {
                         setContentView(R.layout.activity_main);
-                        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                        ft.replace(R.id.maindisplay,new SignupFragment());
-                        ft.commit();
+
+                        boolean flg = false;
+                        File file = new File("/data/data/jp.ac.chiba_fjb.c.chet/files");
+                        String s[] = file.list();
+                        if(s != null) {
+                            for (String a : s) {
+                                if (a.equals("Chet.txt")) {
+                                    flg = true;
+                                }
+                            }
+                        }
+                        System.out.println(flg);
+                        if(flg) {
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.maindisplay, new MainFragment());
+                            ft.commit();
+                        }else{
+                            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                            ft.replace(R.id.maindisplay, new SignupFragment());
+                            ft.commit();
+                        }
                     }
                 },2000);
             }
