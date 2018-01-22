@@ -74,7 +74,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="4"
             android:background="@drawable/frame_style_border"
-            android:text="Button" />
+            android:text="送信" />
 
     </LinearLayout>
 </LinearLayout>

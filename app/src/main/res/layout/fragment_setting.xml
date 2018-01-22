@@ -57,7 +57,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/username2"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/frame_style_roundness_white"
@@ -74,7 +74,7 @@
                 android:textSize="24sp" />
 
             <EditText
-                android:id="@+id/meil"
+                android:id="@+id/meil2"
                 android:layout_width="300dp"
                 android:layout_height="50dp"
                 android:background="@drawable/frame_style_roundness_white"

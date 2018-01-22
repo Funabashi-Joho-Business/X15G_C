@@ -7,9 +7,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +16,8 @@ public class InvitationFragment extends Fragment {
 
     private static ArrayList<ArrayList<Object>> s;
     public static ArrayList<String> mailuser = new ArrayList<String>();
-    public static HashMap<String,String> user;
+    public static HashMap<String, String> user;
     public static LinearLayout Veritcal;
-    public ImageView image;
-    public TextView username;
 
 
     public InvitationFragment() {
@@ -35,10 +31,12 @@ public class InvitationFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_invitation, container, false);
 
-        Veritcal = (LinearLayout)view.findViewById(R.id.Vertical);
+        Veritcal = (LinearLayout) view.findViewById(R.id.Vertical);
+
+        Veritcal.removeAllViews();
 
         //Userシートの2列目をすべて取得
-        new GasMain().main(getActivity(),getContext(),"GetUser");
+        new GasMain().main(getActivity(), getContext(), "GetUser");
 
         view.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +46,7 @@ public class InvitationFragment extends Fragment {
                 ft.commit();
             }
         });
-        view.findViewById(R.id.shoutai).setOnClickListener(new View.OnClickListener(){
+        view.findViewById(R.id.shoutai).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new GasMain().main(getActivity(), getContext(), "MailUser");

@@ -13,7 +13,6 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
 
     MainActivity ma = new MainActivity();
     FragmentTransaction ft;
-    boolean flg = true;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -40,6 +39,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener{
                 getFragmentManager().beginTransaction().remove(this).commit();
                 break;
             case R.id.log:
+                getFragmentManager().beginTransaction().remove(new MainFragment()).commit();
                 ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.maindisplay,new ChatFragment());
                 ft.commit();

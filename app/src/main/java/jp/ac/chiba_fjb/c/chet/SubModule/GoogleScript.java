@@ -101,18 +101,22 @@ public class GoogleScript extends GoogleAccount
 		mScripts.clear();
 	}
 	protected void onError() {
-		//エラーを通知し、実行キューを解除
-		for(ScriptInfo i : mScripts) {
-			final ScriptInfo info = i;
-			if(info.listener != null)
-				mContext.runOnUiThread(new Runnable() {
-					                       @Override
-					                       public void run() {
-						                       info.listener.onExecuted(GoogleScript.this, null);
+		try {
+			//エラーを通知し、実行キューを解除
+			for (ScriptInfo i : mScripts) {
+				final ScriptInfo info = i;
+				if (info.listener != null)
+					mContext.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							info.listener.onExecuted(GoogleScript.this, null);
 
-					                       }
-				                       });
-			mScripts.remove(info);
+						}
+					});
+				mScripts.remove(info);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
 		}
 	}
 }

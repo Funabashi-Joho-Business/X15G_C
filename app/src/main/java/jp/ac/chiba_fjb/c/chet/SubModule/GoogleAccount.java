@@ -48,6 +48,7 @@ public class GoogleAccount {
             Account account = new Account(mAccountName,"com.google");
             mCredential.setSelectedAccount(account);
         }
+        System.out.println(mAccountName);
     }
     public GoogleAccountCredential getCredential(){
         return mCredential;

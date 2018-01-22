@@ -57,8 +57,8 @@
                     android:alpha="0.8"
                     android:background="@android:color/white"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="あと56プン"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:visibility="visible" />
 
                 <ImageButton
                     android:id="@+id/ImageButton"
@@ -93,7 +93,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="4"
                 android:background="@drawable/frame_style_border"
-                android:text="Button" />
+                android:text="送信" />
 
         </LinearLayout>
 

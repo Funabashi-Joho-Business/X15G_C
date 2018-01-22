@@ -1,8 +1,8 @@
 package jp.ac.chiba_fjb.c.chet;
 
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,11 +30,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import jp.ac.chiba_fjb.c.chet.SubModule.BitmapUtil;
 import jp.ac.chiba_fjb.c.chet.SubModule.parseJsonpOfDirectionAPI;
 
-import static jp.ac.chiba_fjb.c.chet.Pin.origin;
+import static jp.ac.chiba_fjb.c.chet.GasMain.*;
+import static jp.ac.chiba_fjb.c.chet.Pin.*;
 
-public class MainFragment extends Fragment implements OnMapReadyCallback ,GoogleMap.OnMapClickListener ,RouteReader.RouteListener {
+public class MainFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener, RouteReader.RouteListener {
 
 
     public MainFragment() {
@@ -41,18 +44,20 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
 
     private static GoogleMap mMap;
     private static TextView minute;
+    private static  Button b;
     private static RouteData.Routes r;
+    private static GasMain gm;
     private static String destination;
     private static String sheetid;
-    private static GasMain gm;
-    private static HashMap<String,Marker> MarkerArray = new HashMap<String, Marker>();
-    private boolean mFlg;
+    private static boolean mFlg = true;
     private SupportMapFragment mapFragment;
     private ImageButton ib;
-    private Button b;
     private Handler handler;
     private Runnable run;
-
+    private PolylineOptions lineOptions = null;
+    private String suborigin = null;
+    private String subdestination = null;
+    private Pin pin;
 
     public static String info_A;
     public static String info_B;
@@ -60,7 +65,6 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
     public static double latitude;
     public static double longitude;
     public static LinearLayout chatbox;
-    public Pin p;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,10 +83,13 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                b.setEnabled(false);
+                b.setText("送信中");
+                mFlg = false;
                 EditText e = (EditText) getView().findViewById(R.id.chettext1);
                 new MainActivity().text = e.getText().toString();
-                gm.main(getActivity(),getContext(),"Main");
-                gm.getAllUser(getContext());
+                gm.main(getActivity(), getContext(), "Main");
+                getAllUser();
             }
         });
 
@@ -98,89 +105,112 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
         handler = new Handler();
         run = new Runnable() {
             @Override
-            public void run () {
-                if(mFlg) {
-                    gm.main(getActivity(), getContext(), "Main");
+            public void run() {
+                if (mFlg) {
+                    gm.main(getActivity(), getContext(), "Return");
                     Route(origin);
                 }
-                handler.postDelayed(this, 3000);
+                if(!pin.DecisionWifi() && !pin.DecisionGps() && mFlg){
+                    pin = new Pin(getActivity(), getContext(), mMap);
+                }
+                handler.postDelayed(this, 5000);
             }
         };
         handler.post(run);
         return view;
     }
+
     @Override
     public void onStart() {
-        mFlg = true;
+        this.mFlg = true;
         super.onStart();
     }
+
     @Override
     public void onStop() {
-        mFlg = false;
+        this.mFlg = false;
         super.onStop();
     }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         //自分の位置をマップ上に表示
-        p = new Pin(getActivity(), mMap);
+        pin = new Pin(getActivity(), getContext(), mMap);
         mMap.setOnMapClickListener(this);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        System.out.println("MAP表示完了！！");
     }
+
     @Override
     public void onMapClick(LatLng latLng) {
-        LatLng lat = new LatLng(latLng.latitude, latLng.longitude);
-        String origin = p.my+","+p.mx;
-        latitude = lat.latitude;
-        longitude = lat.longitude;
-        destination = lat.latitude+","+lat.longitude;
+        String origin = my + "," + mx;
+        if (getSheetid() == null) {
+            LatLng lat = new LatLng(latLng.latitude, latLng.longitude);
+            latitude = lat.latitude;
+            longitude = lat.longitude;
+            destination = lat.latitude + "," + lat.longitude;
+        }
         Route(origin);
     }
-    public void Route(String origin){
+
+    public void Route(String origin) {
         mMap.clear();
-        if(destination != null && origin != null) {
+
+        if (getSheetid() != null && gm.getArray() != null) {
+            ArrayList<ArrayList<Object>> s = gm.getArray();
+            String name = s.get(0).get(0).toString();
+            for (int index = 0; index < s.size(); index++) {
+                if (name.equals(s.get(index).get(0))) {
+                    if (!(s.get(index).get(3).toString().equals("0"))) {
+                        destination = s.get(index).get(3).toString() + "," + s.get(index).get(4).toString();
+                    }
+                }
+            }
+        }
+        if(lineOptions != null && subdestination != null && destination.equals(subdestination)){
+//        if(lineOptions != null && suborigin != null && subdestination != null && destination.equals(subdestination) && origin.equals(suborigin)){
+            String[] s = destination.split(",");
+            double lat = Double.parseDouble(s[0]);
+            double lon = Double.parseDouble(s[1]);
+            mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon)).title(r.legs[0].end_address));
+            mMap.addPolyline(lineOptions);
+            latitude = lat;
+            longitude = lon;
+        }else if (destination != null && origin != null) {
             RouteReader.recvRoute(origin, destination, this);
+            String[] s = destination.split(",");
+            latitude = Double.parseDouble(s[0]);
+            longitude = Double.parseDouble(s[1]);
         }
         setUserPin();
+        suborigin = origin;
+        subdestination = destination;
     }
+
     @Override
     public void onRoute(RouteData routeData) {
         //ルート受け取り処理
         if (routeData != null && routeData.routes.length > 0 && routeData.routes[0].legs.length > 0) {
             r = routeData.routes[0];
-//            RouteData.Location start = r.legs[0].start_location;
             RouteData.Location end = r.legs[0].end_location;
-//            mMap.addMarker(new MarkerOptions().position(new LatLng(start.lat, start.lng)).title(r.legs[0].start_address));
             mMap.addMarker(new MarkerOptions().position(new LatLng(end.lat, end.lng)).title(r.legs[0].end_address));
-            minute.setText(r.legs[0].duration.text+"  "+r.legs[0].distance.text);
+            minute.setText(r.legs[0].duration.text + "  " + r.legs[0].distance.text);
 
-            List<List<HashMap<String,String>>> list = new parseJsonpOfDirectionAPI().parse(routeData);
-            System.out.println("Thread実行"+list);
+            List<List<HashMap<String, String>>> list = new parseJsonpOfDirectionAPI().parse(routeData);
             RouteSearch(list);
         }
     }
-    public String getCheck(){
-        String s = "";
-        try{
-            s = r.legs[0].end_address;
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-        return s;
-    }
-    public void RouteSearch(List<List<HashMap<String, String>>> result){
+
+    public void RouteSearch(List<List<HashMap<String, String>>> result) {
         ArrayList<LatLng> points = null;
-        PolylineOptions lineOptions = null;
+        lineOptions = null;
         MarkerOptions markerOptions = new MarkerOptions();
-        if(result.size() != 0){
-            for(int i=0;i<result.size();i++){
+        if (result.size() != 0) {
+            for (int i = 0; i < result.size(); i++) {
                 points = new ArrayList<LatLng>();
                 lineOptions = new PolylineOptions();
                 List<HashMap<String, String>> path = result.get(i);
-                for(int j=0;j<path.size();j++){
-                    HashMap<String,String> point = path.get(j);
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
@@ -192,38 +222,68 @@ public class MainFragment extends Fragment implements OnMapReadyCallback ,Google
                 lineOptions.width(15);
                 lineOptions.color(Color.BLUE);
             }
-            //描画
             mMap.addPolyline(lineOptions);
         }
     }
-    public void setmFlg(boolean mflg){
-        this.mFlg = mflg;
+
+    public String getCheck() {
+        String s = "";
+        try {
+            if(r != null) {
+                s = r.legs[0].end_address;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
-    public String getSheetid(){
+
+    public String getSheetid() {
         return this.sheetid;
     }
-    public void setSheetid(String sheetid){
+
+    public void setSheetid(String sheetid) {
         this.sheetid = sheetid;
     }
-    public void setUserPin(){
-        if(gm.getAllUser(getContext()) != null) {
-            ArrayList<String> user = gm.getAllUser(getContext());
-            ArrayList<ArrayList<Object>> s = gm.getArray();
 
-            HashMap<String,Integer> UserArrayIndex = new HashMap<>();
-            for(int SIndex = 0;SIndex < s.size();SIndex++) {
+    public static void setUserPin() {
+        if (getAllUser() != null) {
+            ArrayList<String> user = getAllUser();
+            ArrayList<ArrayList<Object>> s = getArray();
+
+            HashMap<String, Integer> UserArrayIndex = new HashMap<>();
+            for (int SIndex = 0; SIndex < s.size(); SIndex++) {
                 if (UserArrayIndex.containsKey(s.get(SIndex).get(0).toString()) || user.contains(s.get(SIndex).get(0).toString())) {
                     UserArrayIndex.put(s.get(SIndex).get(0).toString(), SIndex);
-               }
+                }
             }
             for (int UserIndex = 0; UserIndex < user.size(); UserIndex++) {
                 int i = UserArrayIndex.get(user.get(UserIndex));
                 BigDecimal lat = (BigDecimal) s.get(i).get(1);
                 BigDecimal lon = (BigDecimal) s.get(i).get(2);
                 LatLng latLng = new LatLng(lat.doubleValue(), lon.doubleValue());
-                Marker m = mMap.addMarker(new MarkerOptions().position(latLng).title(s.get(i).get(0).toString()));
-                MarkerArray.put(s.get(i).get(0).toString(), m);
+                Marker m;
+                if (s.get(i).get(5).toString().equals("")) {
+                    m = mMap.addMarker(new MarkerOptions().position(latLng).title(s.get(i).get(0).toString()));
+                } else {
+                    Bitmap icon = BitmapUtil.fromBase64(s.get(i).get(5).toString());
+                    icon = BitmapUtil.setCircle(icon);
+                    m = mMap.addMarker(new MarkerOptions().position(latLng).title(s.get(i).get(0).toString()).icon(BitmapDescriptorFactory.fromBitmap(icon)));
+                }
             }
         }
+    }
+
+    public boolean getmFlg() {
+        return mFlg;
+    }
+
+    public void setmFlg(boolean flg) {
+        mFlg = flg;
+    }
+
+    public void setButton(){
+        b.setEnabled(true);
+        b.setText("送信");
     }
 }

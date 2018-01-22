@@ -15,6 +15,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static jp.ac.chiba_fjb.c.chet.GasMain.getAllUser;
+import static jp.ac.chiba_fjb.c.chet.GasMain.getArray;
+import static jp.ac.chiba_fjb.c.chet.GasMain.setMyLO;
+import static jp.ac.chiba_fjb.c.chet.GasMain.setTO;
+import static jp.ac.chiba_fjb.c.chet.GasMain.setYourLO;
+
 public class ChatFragment extends Fragment {
 
 
@@ -24,11 +30,13 @@ public class ChatFragment extends Fragment {
 
     private TextView check;
     private LinearLayout chatbox;
-    private Button b;
+    private static  Button b;
     private ArrayList<ArrayList<Object>> s;
     private ArrayList<String> user;
     private Handler handler;
     private Runnable r;
+    private GasMain gm;
+    private static boolean mFlg = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,16 +48,20 @@ public class ChatFragment extends Fragment {
 
         chatbox = view.findViewById(R.id.chatbox2);
 
+        gm = new GasMain();
+
         reload();
 
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                mFlg = false;
+                b.setEnabled(false);
+                b.setText("送信中");
                 EditText e = (EditText) getView().findViewById(R.id.chettext2);
                 new MainActivity().text = e.getText().toString();
-                new GasMain().main(getActivity(),getContext(),"Main");
+                gm.main(getActivity(), getContext(), "Main");
             }
         });
 
@@ -57,7 +69,7 @@ public class ChatFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.maindisplay,new MainFragment());
+                ft.replace(R.id.maindisplay, new MainFragment());
                 handler.removeCallbacks(r);
                 ft.commit();
             }
@@ -65,41 +77,80 @@ public class ChatFragment extends Fragment {
 
         handler = new Handler();
         r = new Runnable() {
-            int count = 0;
             @Override
             public void run() {
+                if (mFlg) {
                     reload();
-                handler.postDelayed(this, 1000);
+                    handler.postDelayed(this, 5000);
+                }
             }
         };
         handler.post(r);
         return view;
     }
 
-    public void reload(){
-        new GasMain().main(getActivity(),getContext(),"Return");
-        s = new GasMain().getArray();
-        user = new GasMain().getAllUser(getContext());
-        check.setText(new MainFragment().getCheck());
-        chatbox.removeAllViews();
-        for(int index = 0;index<s.size();index++){
-            if(s.get(index).get(7).equals("")){
-                continue;
-            }else if(user.contains(s.get(index).get(0))) {
-                TextView tv = new TextView(getContext());
-                LinearLayout ll = new LinearLayout(getContext());
-                tv = new GasMain().setTO(tv, index);
-                ll = new GasMain().setYourLO(ll,getContext());
-                ll.addView(tv);
-                chatbox.addView(ll);
-            }else{
-                TextView tv = new TextView(getContext());
-                LinearLayout ll = new LinearLayout(getContext());
-                tv = new GasMain().setTO(tv, index);
-                ll = new GasMain().setMyLO(ll);
-                ll.addView(tv);
-                chatbox.addView(ll);
+    @Override
+    public void onStart() {
+        this.mFlg = true;
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        this.mFlg = false;
+        super.onStop();
+    }
+
+    public void reload() {
+        try {
+            gm.main(getActivity(), getContext(), "Return");
+            s = getArray();
+            user = getAllUser();
+            check.setText(new MainFragment().getCheck());
+            chatbox.removeAllViews();
+            for (int index = 0; index < s.size(); index++) {
+                if (s.get(index).get(7).equals("")) {
+                    continue;
+                } else if (user.contains(s.get(index).get(0))) {
+                    TextView tv = new TextView(getContext());
+                    LinearLayout ll = new LinearLayout(getContext());
+                    tv = setTO(tv, index);
+                    ll = setYourLO(ll, getContext(), index);
+                    ll.addView(tv);
+                    chatbox.addView(ll);
+                } else {
+                    TextView tv = new TextView(getContext());
+                    LinearLayout ll = new LinearLayout(getContext());
+                    tv = setTO(tv, index);
+                    ll = setMyLO(ll);
+                    ll.addView(tv);
+                    chatbox.addView(ll);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
+
+    public void setButton() {
+        b.setEnabled(true);
+        b.setText("送信");
+    }
+
+    public boolean getmFlg() {
+        return this.mFlg;
+    }
+
+    public void setmFlg(boolean flg) {
+        this.mFlg = flg;
+    }
+    public TextView getCheck(){
+        return check;
+    }
+    public LinearLayout getChatbox(){
+        return chatbox;
+    }
+    public ArrayList<String> getUser(){
+        return user;
     }
 }

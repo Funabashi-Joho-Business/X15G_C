@@ -93,7 +93,6 @@ public class BitmapUtil {
 		scale.postScale(scaleFactor, scaleFactor);
 
 		Bitmap resizeBitmap = Bitmap.createBitmap(bitmap, 0, 0, oldWidth, oldHeight, scale, false);
-
 		return resizeBitmap;
 
 	}
@@ -115,10 +114,24 @@ public class BitmapUtil {
 			b.compress(Bitmap.CompressFormat.PNG,100,os);
 			String encode = Base64.encodeToString(os.toByteArray(), Base64.DEFAULT);
 			os.close();
+			b.recycle();
 			return encode;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static Bitmap setCircle(Bitmap bitmap){
+		int width = bitmap.getWidth();
+		int height = bitmap.getHeight();
+		int radius = width>height?height/2:width/2;
+
+		BitmapTrim bitmapTrim = new BitmapTrim(width, height);
+		bitmapTrim.setTrimCircle(width>height?width/2:width/2+width/20, width>height?height/2+height/20:height/2, radius);
+		bitmapTrim.drawBitmap(bitmap, 10, 10);
+
+		bitmap = bitmapTrim.getBitmap();
+		return bitmap;
 	}
 }

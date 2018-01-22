@@ -1,7 +1,7 @@
 package jp.ac.chiba_fjb.c.chet.SubModule;
 
 /**
- * Created by x15g009 on 2017/12/04.
+ * Created by x15g009 on 2017/12/06.
  */
 
 import android.graphics.Bitmap;
@@ -141,25 +141,3 @@ public class BitmapTrim {
     }
 
 }
-/***Sample
- BitmapTrim bitmapTrim = new BitmapTrim(width, height);
- bitmapTrim.setAntiAlias(true);	// Optional(default: false)
-
- // Set trim
-
- bitmapTrim.setTrimOval(new RectF(0, 0, width, height);		// Oval
- bitmapTrim.setTrimCircle(width/2, height/2, width/2);		// Circle
- bitmapTrim.setTrimRoundRect(								// Round rectangle(square)
- new RectF(0, 0, width, height),
- width/10,
- height/10
- );
- bitmapTrim.setTrimRect(new RectF(0, 0, width, height);		// Rectangle(square)
-
- int left = 0, top = 0;
-
- bitmapTrim.drawBitmap(bitmap1, left, top);
- bitmapTrim.drawBitmap(bitmap2, left, top);
- bitmapTrim.drawBitmap(bitmap3, left, top);
- scanedImageBitmap = bitmapTrim.getBitmap();
- ***/
